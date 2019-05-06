@@ -1,0 +1,18 @@
+<zk>
+	<window apply="org.zkoss.bind.BindComposer"
+		viewModel="@id('vm')@init('au.edu.envirotech.tasktracker.MyViewModel')"
+		validationMessages="@id('vmsgs')">
+		<hlayout>today is <label value="@load(vm.answer)" /></hlayout>
+		<button label="ask" onClick="@command('cmd')"/>
+	</window>
+	
+	
+	<window apply="au.edu.envirotech.tasktracker.TaskTrackerComposer">
+		<caption>Wind</caption>
+		<groupbox>
+			<caption>Grupo</caption>
+		</groupbox>
+		<hlayout>today is</hlayout>
+		<button label="@load($composer.user)"/>
+	</window>
+</zk>

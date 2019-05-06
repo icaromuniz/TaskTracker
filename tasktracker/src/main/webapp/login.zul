@@ -1,0 +1,42 @@
+<?page title="icaro.muniz - Task Tracker" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<div height="100%">
+		<space vflex="true" />
+		<div>
+			<hlayout>
+				<space hflex="true" />
+				<groupbox hflex="min" closable="false">
+					<caption>Login</caption>
+					<grid hflex="min" apply="au.edu.envirotech.tasktracker.AuthenticationComposer">
+						<rows>
+							<row>
+								<label value="E-mail:" />
+								<textbox type="email"
+									constraint="/.+@.+\.[a-z]+/: e-mail address only, no empty"
+									onOK="texboxPassword.focus()" />
+							</row>
+							<row>
+								<label value="Password:" />
+								<textbox id="texboxPassword"
+									type="password" constraint="no empty"
+									forward="onOK = buttonOK.onClick" />
+							</row>
+							<row spans="2" align="center">
+								<button id="buttonOK" label="Confirm"
+									onClick='Executions.sendRedirect("index.zul")' />
+							</row>
+							<row spans="2" align="center">
+								<a onClick='Executions.sendRedirect("registration.zul")'>
+									New user registration
+								</a>
+							</row>
+						</rows>
+					</grid>
+				</groupbox>
+				<space hflex="true" />
+			</hlayout>
+		</div>
+		<space vflex="true" />
+		<space vflex="true" />
+	</div>
+</zk>

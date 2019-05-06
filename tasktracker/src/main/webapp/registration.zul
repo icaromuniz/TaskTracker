@@ -1,0 +1,39 @@
+<?page title="icaro.muniz - Task Tracker" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<space vflex="true" />
+	<hlayout>
+		<space hflex="true" />
+		<groupbox>
+			<caption>New user registration</caption>
+			<grid hflex="min" apply="au.edu.envirotech.tasktracker.AuthenticationComposer">
+				<rows>
+					<row>
+						<label value="New user's e-mail: " />
+						<textbox id="textboxEmail" type="email" cols="50" maxlength="50"
+							constraint="/.+@.+\.[a-z]+/: e-mail address only, no empty" />
+					</row>
+					<row>
+						<label value="Password:" />
+						<textbox id="textboxPassword" type="password" maxlength="10"
+							constraint="no empty" forward="onOK = buttonOK.onClick" />
+					</row>
+					<row>
+						<label value="Confirm your password:" />
+						<textbox id="textboxConfirmation" type="password" maxlength="10"
+							constraint="no empty" forward="onOK = buttonOK.onClick" />
+					</row>
+					<row spans="2" align="center">
+						<cell>
+							<button label="Register" onClick="$composer.registerUser()"/>
+							<space/>
+							<button label="Cancel" onClick='Executions.sendRedirect("/login.zul")'/>
+						</cell>
+					</row>
+				</rows>
+			</grid>
+		</groupbox>
+		<space hflex="true" />
+	</hlayout>
+	<space vflex="true" />
+	<space vflex="true" />
+</zk>
