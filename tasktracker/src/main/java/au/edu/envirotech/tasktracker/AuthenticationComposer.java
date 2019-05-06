@@ -1,8 +1,11 @@
 package au.edu.envirotech.tasktracker;
 
+import java.sql.SQLException;
+
 import org.zkoss.bind.BindComposer;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
+import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.event.Event;
 import org.zkoss.zk.ui.event.EventListener;
@@ -32,21 +35,24 @@ public class AuthenticationComposer extends BindComposer<Component> {
 		if ((textboxEmail.getValue() != null || !textboxEmail.getValue().isEmpty()) &&
 				textboxPassword.getValue() != null || !textboxPassword.getValue().isEmpty() ) {
 			
+			int userId = 0;
+
 			if (!textboxPassword.getValue().equals(textboxConfirmation.getValue())) {
 				throw new WrongValueException(textboxConfirmation, "Not matching with the password. Please, try again.");
 			}
 			
-			int userId = 0;
-			
 			try {
 				userId = PersistenceService.registerUser(textboxEmail.getValue(), textboxPassword.getValue());
-			} catch (ClassNotFoundException e) {
+			} catch (WrongValueException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 			if (userId == 0) {
-				Messagebox.show("Something went wrong", "Registration error", 1, null);
+				Messagebox.show("Something went wrong during registration.", "Registration error", 1, Messagebox.ERROR);
 			} else {
 				
 				EventListener<Event> eventListener = new EventListener<Event>() {
@@ -57,6 +63,32 @@ public class AuthenticationComposer extends BindComposer<Component> {
 				
 				Messagebox.show("User successfully registered", "Registration success", 1, Messagebox.INFORMATION, eventListener);
 			}
+		}
+	}
+	
+	public void doLogin() {
+		
+		if ((textboxEmail.getValue() != null || !textboxEmail.getValue().isEmpty()) &&
+				textboxPassword.getValue() != null || !textboxPassword.getValue().isEmpty() ) {
+			
+			boolean isUserAuthorized = false;
+			
+			try {
+				isUserAuthorized = PersistenceService.isUserAuthorized(textboxEmail.getValue(), textboxPassword.getValue());
+			} catch (WrongValueException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (isUserAuthorized) {
+				Sessions.getCurrent().setAttribute("auth_usr", textboxEmail.getValue());
+				Executions.sendRedirect("/");
+			}
+			
+			Messagebox.show("Authentication information doesn't match with registry.", "Login failed", 1, Messagebox.EXCLAMATION);
 		}
 	}
 }

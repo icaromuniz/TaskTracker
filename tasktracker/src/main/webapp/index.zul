@@ -14,5 +14,7 @@
 		</groupbox>
 		<hlayout>today is</hlayout>
 		<button label="@load($composer.user)"/>
+		<separator/>
+		<button label="logout" onClick='Sessions.getCurrent().removeAttribute("auth_usr"); Executions.sendRedirect("/login.zul")'/>
 	</window>
 </zk>

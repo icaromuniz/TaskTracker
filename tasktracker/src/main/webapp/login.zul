@@ -11,19 +11,19 @@
 						<rows>
 							<row>
 								<label value="E-mail:" />
-								<textbox type="email"
+								<textbox id="textboxEmail" type="email" cols="30"
 									constraint="/.+@.+\.[a-z]+/: e-mail address only, no empty"
-									onOK="texboxPassword.focus()" />
+									onOK="textboxPassword.focus()" />
 							</row>
 							<row>
 								<label value="Password:" />
-								<textbox id="texboxPassword"
+								<textbox id="textboxPassword"
 									type="password" constraint="no empty"
 									forward="onOK = buttonOK.onClick" />
 							</row>
 							<row spans="2" align="center">
 								<button id="buttonOK" label="Confirm"
-									onClick='Executions.sendRedirect("index.zul")' />
+									onClick='$composer.doLogin()' />
 							</row>
 							<row spans="2" align="center">
 								<a onClick='Executions.sendRedirect("registration.zul")'>
