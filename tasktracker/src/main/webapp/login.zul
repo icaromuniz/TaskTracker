@@ -22,7 +22,7 @@
 									forward="onOK = buttonOK.onClick" />
 							</row>
 							<row spans="2" align="center">
-								<button id="buttonOK" label="Confirm"
+								<button id="buttonOK" label="Confirm" iconSclass="z-icon-check-square-o"
 									onClick='$composer.doLogin()' />
 							</row>
 							<row spans="2" align="center">

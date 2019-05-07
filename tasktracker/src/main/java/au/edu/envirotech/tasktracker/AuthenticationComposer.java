@@ -13,6 +13,8 @@ import org.zkoss.zk.ui.util.ConventionWires;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 
+import au.edu.envirotech.tasktracker.model.User;
+
 public class AuthenticationComposer extends BindComposer<Component> {
 
 	private static final long serialVersionUID = -2537702490116215106L;
@@ -71,10 +73,10 @@ public class AuthenticationComposer extends BindComposer<Component> {
 		if ((textboxEmail.getValue() != null || !textboxEmail.getValue().isEmpty()) &&
 				textboxPassword.getValue() != null || !textboxPassword.getValue().isEmpty() ) {
 			
-			boolean isUserAuthorized = false;
+			User authorizedUser = null;
 			
 			try {
-				isUserAuthorized = PersistenceService.isUserAuthorized(textboxEmail.getValue(), textboxPassword.getValue());
+				authorizedUser = PersistenceService.getAuthorizedUser(textboxEmail.getValue(), textboxPassword.getValue());
 			} catch (WrongValueException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -83,12 +85,14 @@ public class AuthenticationComposer extends BindComposer<Component> {
 				e.printStackTrace();
 			}
 			
-			if (isUserAuthorized) {
-				Sessions.getCurrent().setAttribute("auth_usr", textboxEmail.getValue());
+			if (authorizedUser != null) {
+				
+				Sessions.getCurrent().setAttribute("auth_usr", authorizedUser);
 				Executions.sendRedirect("/");
-			}
 			
-			Messagebox.show("Authentication information doesn't match with registry.", "Login failed", 1, Messagebox.EXCLAMATION);
+			} else {
+				Messagebox.show("Authentication information doesn't match with registry.", "Login failed", 1, Messagebox.EXCLAMATION);
+			}
 		}
 	}
 }

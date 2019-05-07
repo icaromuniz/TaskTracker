@@ -1,20 +1,118 @@
 <zk>
-	<window apply="org.zkoss.bind.BindComposer"
+
+	<window id="window" title="Task Tracker" border="normal" vflex="1"
+		apply="au.edu.envirotech.tasktracker.TaskTrackerComposer">
+
+		<hlayout width="100%">
+			<textbox value='@load($composer.currentUser)' disabled="true"
+				style="font-weight: bold;" cols="50" />
+			<label hflex="true" />
+			<button onClick="$composer.addTask()"
+				iconSclass="z-icon-plus" tooltiptext="Add another task" />
+			<button onClick="$composer.removeTask()"
+				iconSclass="z-icon-minus" tooltiptext="Remove selected" />
+		</hlayout>
+
+		<separator />
+
+		<listbox id="listbox" model="@bind($composer.taskList)" multiple="true" checkmark="true">
+			<listhead>
+				<listheader label="Date" hflex="min" />
+				<listheader label="Department" hflex="min" />
+				<listheader label="Task Specification" />
+				<listheader label="Start" hflex="min" />
+				<listheader label="Finish" hflex="min" />
+				<!-- <listheader label="Spent" hflex="min" /> -->
+				<listheader label="Planned" hflex="min" />
+				<listheader label="Notes (Optional)" />
+				<listheader label="Outcomes" />
+				<listheader label="Follow Up Action" />
+			</listhead>
+			<template name="model" var="task">
+				<listitem value="@bind(task)">
+					<listcell>
+						<datebox value="@bind(task.date)" cols="10" />
+					</listcell>
+					<listcell label="@bind(task.department)">
+						<combobox autodrop="true" cols="20">
+							<comboitem label="Executive Management" />
+							<comboitem label="Sales" />
+							<comboitem label="Marketing" />
+							<comboitem label="Admin / Enrolments" />
+							<comboitem label="Academic" />
+							<comboitem label="RTO Compliance" />
+							<comboitem label="Finance" />
+							<comboitem label="HR" />
+							<comboitem label="ICT" />
+							<comboitem label="Quality Assurance" />
+							<comboitem label="Special Projects" />
+							<comboitem label="Other" />
+						</combobox>
+					</listcell>
+					<listcell>
+						<textbox value="@bind(task.description)"
+							rows="3" hflex="true" maxlength="500"/>
+					</listcell>
+					<listcell>
+						<timebox value="@bind(task.start)" cols="6"
+							format="HH:mm" />
+					</listcell>
+					<listcell>
+						<timebox value="@load(task.finish)" cols="6"
+							format="HH:mm" />
+					</listcell>
+					<!-- <listcell>
+						<label value="${timeboxStart.value}"/>
+					</listcell> -->
+					<listcell>
+						<combobox cols="4">
+							<comboitem label="Yes" />
+							<comboitem label="No" />
+						</combobox>
+					</listcell>
+					<listcell>
+						<textbox value="@bind(task.description)"
+							rows="3" hflex="true" maxlength="500" />
+					</listcell>
+					<listcell>
+						<textbox value="@bind(task.description)"
+							rows="3" hflex="true" maxlength="500" />
+					</listcell>
+					<listcell>
+						<textbox value="@bind(task.description)"
+							rows="3" hflex="true" maxlength="500" />
+					</listcell>
+				</listitem>
+			</template>
+		</listbox>
+
+		<separator />
+		
+		<hlayout style="text-align: center;">
+			<button label="Save" onClick="$composer.saveTaskList()" iconSclass="z-icon-save" />
+			<space/>
+			<button label="logout" iconSclass="z-icon-sign-out" onClick='Sessions.getCurrent().removeAttribute("auth_usr"); Executions.sendRedirect("/login.zul")'/>
+		</hlayout>
+	</window>
+
+
+
+	<!-- <window apply="org.zkoss.bind.BindComposer"
 		viewModel="@id('vm')@init('au.edu.envirotech.tasktracker.MyViewModel')"
 		validationMessages="@id('vmsgs')">
 		<hlayout>today is <label value="@load(vm.answer)" /></hlayout>
 		<button label="ask" onClick="@command('cmd')"/>
-	</window>
-	
-	
-	<window apply="au.edu.envirotech.tasktracker.TaskTrackerComposer">
+		</window> -->
+
+
+	<!-- <window apply="au.edu.envirotech.tasktracker.TaskTrackerComposer">
 		<caption>Wind</caption>
 		<groupbox>
-			<caption>Grupo</caption>
+		<caption>Grupo</caption>
 		</groupbox>
 		<hlayout>today is</hlayout>
 		<button label="@load($composer.user)"/>
 		<separator/>
 		<button label="logout" onClick='Sessions.getCurrent().removeAttribute("auth_usr"); Executions.sendRedirect("/login.zul")'/>
-	</window>
+		</window> -->
 </zk>
