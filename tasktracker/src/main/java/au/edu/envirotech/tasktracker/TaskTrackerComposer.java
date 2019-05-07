@@ -41,7 +41,7 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 			taskList = PersistenceService.getTaskList((User) Sessions.getCurrent().getAttribute("auth_usr"));
 			
 			// initializes the list with one blank task
-			if (taskList == null) {
+			if (taskList == null || taskList.isEmpty()) {
 				
 				taskList = new ArrayList<Task>();
 				Task t = new Task();

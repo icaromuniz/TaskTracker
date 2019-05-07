@@ -1,3 +1,4 @@
+<?page title="Task Tracker icaro#linux" contentType="text/html;charset=UTF-8"?>
 <zk>
 
 	<window id="window" title="Task Tracker" border="normal" vflex="1"
@@ -94,25 +95,4 @@
 			<button label="logout" iconSclass="z-icon-sign-out" onClick='Sessions.getCurrent().removeAttribute("auth_usr"); Executions.sendRedirect("/login.zul")'/>
 		</hlayout>
 	</window>
-
-
-
-	<!-- <window apply="org.zkoss.bind.BindComposer"
-		viewModel="@id('vm')@init('au.edu.envirotech.tasktracker.MyViewModel')"
-		validationMessages="@id('vmsgs')">
-		<hlayout>today is <label value="@load(vm.answer)" /></hlayout>
-		<button label="ask" onClick="@command('cmd')"/>
-		</window> -->
-
-
-	<!-- <window apply="au.edu.envirotech.tasktracker.TaskTrackerComposer">
-		<caption>Wind</caption>
-		<groupbox>
-		<caption>Grupo</caption>
-		</groupbox>
-		<hlayout>today is</hlayout>
-		<button label="@load($composer.user)"/>
-		<separator/>
-		<button label="logout" onClick='Sessions.getCurrent().removeAttribute("auth_usr"); Executions.sendRedirect("/login.zul")'/>
-		</window> -->
 </zk>

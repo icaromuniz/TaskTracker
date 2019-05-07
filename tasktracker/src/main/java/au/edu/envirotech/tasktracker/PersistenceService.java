@@ -31,7 +31,7 @@ public class PersistenceService {
 	public static int registerUser(String email, String password) throws SQLException {
 		
 		Connection connection = getConnection();
-		String sql = "insert into public.user (id, email, password) values (nextval('user_seq'), ?, ?);"; // TODO Change database's column 'name' to 'email' 
+		String sql = "insert into public.user (id, email, password) values (nextval('user_seq'), ?, ?);"; 
 		int newId = 0;
 		
 		try {
@@ -71,8 +71,8 @@ public class PersistenceService {
 
 	public static void saveTaskList(List<Task> taskList) throws SQLException {
 		
-		StringBuilder stringBuilder = new StringBuilder();
 		PreparedStatement preparedStatement;
+//		StringBuilder stringBuilder = new StringBuilder();
 		
 		/*
 		 * for (Task task : taskList) { stringBuilder.
@@ -87,6 +87,8 @@ public class PersistenceService {
 		preparedStatement.setDate(2, new Date(taskList.get(0).getDate().getTime()));
 		
 		preparedStatement.executeUpdate();
+		
+		// FIXME execute removal of absent tasks from database
 	}
 
 	public static List<Task> getTaskList(User user) throws SQLException {
