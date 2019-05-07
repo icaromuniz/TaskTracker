@@ -3,6 +3,10 @@
 
 	<window id="window" title="Task Tracker" border="normal" vflex="1"
 		apply="au.edu.envirotech.tasktracker.TaskTrackerComposer">
+		
+		<hlayout width="100%" style="text-align: center;">
+			<image src="/img/logo-small-new.jpg" style="align: center;"/>
+		</hlayout>
 
 		<hlayout width="100%">
 			<textbox value='@load($composer.currentUser)' disabled="true"
