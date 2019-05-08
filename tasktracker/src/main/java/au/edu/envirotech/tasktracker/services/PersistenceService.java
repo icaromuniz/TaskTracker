@@ -31,13 +31,13 @@ public class PersistenceService {
 
 	public static int registerUser(String email, String password) throws SQLException {
 		
-		Connection connection = getConnection();
+		PreparedStatement preparedStatement = null;
 		String sql = "insert into public.user (id, email, password) values (nextval('user_seq'), ?, ?);"; 
 		int newId = 0;
 		
 		try {
 			
-			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement = getConnection().prepareStatement(sql);
 			
 			preparedStatement.setString(1, email);
 			preparedStatement.setString(2, password);
@@ -45,8 +45,10 @@ public class PersistenceService {
 			newId = preparedStatement.executeUpdate();
 			
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			throw e;
+		} finally {
+			preparedStatement.close();
 		}
 		
 		return newId;
@@ -55,44 +57,99 @@ public class PersistenceService {
 	public static User getAuthorizedUser(String email, String password) throws SQLException {
 		
 		String sql = "select * from public.user where email like ? and password like ?";
-		PreparedStatement preparedStatement = getConnection().prepareStatement(sql);
+		PreparedStatement preparedStatement = null;
 		ResultSet resultSet;
 		
-		preparedStatement.setString(1, email);
-		preparedStatement.setString(2, password);
-		
-		resultSet = preparedStatement.executeQuery();
-		
-		if (resultSet != null && resultSet.next() && resultSet.getInt("id") > 0) {
-			return new User(resultSet.getInt("id"), resultSet.getString("email"));
+		try {
+			
+			preparedStatement = getConnection().prepareStatement(sql);
+			
+			preparedStatement.setString(1, email);
+			preparedStatement.setString(2, password);
+			
+			resultSet = preparedStatement.executeQuery();
+			
+			if (resultSet != null && resultSet.next() && resultSet.getInt("id") > 0) {
+				return new User(resultSet.getInt("id"), resultSet.getString("email"));
+			}
+			
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+			throw e;
+			
+		} finally {
+			
+			if (preparedStatement != null) {
+				preparedStatement.close();
+			}
 		}
 		
 		return null;
 	}
 
 	public static void saveTaskList(List<Task> taskList) throws SQLException {
-		
-		PreparedStatement preparedStatement;
-//		StringBuilder stringBuilder = new StringBuilder();
-		
-		/*
-		 * for (Task task : taskList) { stringBuilder.
-		 * append("update public.task set (id = nextval('task_seq'), user_id = ?, date = ?)"
-		 * ); }
-		 */
-		
-		preparedStatement = getConnection().prepareStatement("insert into public.task ( \"id\", \"user_id\", \"date\" ) "
-				+ "values (nextval('task_seq'), ?, ?);");
-		
-		preparedStatement.setInt(1, taskList.get(0).getUser().getId());
-		preparedStatement.setDate(2, new Date(taskList.get(0).getDate().getTime()));
-		
-		preparedStatement.executeUpdate();
-		
+
+		String stringDelete = "delete from public.task where user_id = ? and id not in ("; // TODO delete absent records
+		String stringInsert = "insert into public.task (\"id\", \"user_id\", \"date\" ) values (nextval('task_seq'), ?, ?);";
+		String stringUpdate = ""; // TODO insert new records
+
+		PreparedStatement preparedStatementInsert = null;
+		PreparedStatement preparedStatementUpdate = null;
+		PreparedStatement preparedStatementDelete = null;
+
+		// *insert new tasks
+		// *update tasks
+		// *delete absent tasks
+
+		try {
+
+			preparedStatementInsert = getConnection().prepareStatement(stringInsert);
+			preparedStatementUpdate = getConnection().prepareStatement(stringUpdate);
+
+			// taking the present ids to be kept
+			for (Task task : taskList) {
+				stringDelete += task.getId() + ",";
+			}
+			
+			// finishing the deletion string
+			stringDelete = stringDelete.substring(0, stringDelete.length() - 1) + ");";	// cuts the last "," and closes the parenthesis
+
+			// deleting records of tasks removed from the list
+			preparedStatementDelete = getConnection().prepareStatement(stringDelete);
+			preparedStatementDelete.setInt(1, taskList.get(0).getUser().getId());
+			preparedStatementDelete.executeUpdate();
+
+			for (Task task : taskList) {
+
+				if (task.getId() == 0) { // inserting the new task
+
+					preparedStatementInsert.setInt(1, task.getUser().getId());
+					preparedStatementInsert.setDate(2, new Date(task.getDate().getTime()));
+					preparedStatementInsert.executeUpdate();
+
+				} else { // updating the existing task
+
+				}
+			}
+
+		} catch (SQLException e) {
+
+			getConnection().rollback();
+			e.printStackTrace();
+			throw e;
+
+		} finally {
+
+			if (preparedStatementInsert != null) preparedStatementInsert.close();
+			if (preparedStatementUpdate != null) preparedStatementUpdate.close();
+			if (preparedStatementDelete != null) preparedStatementDelete.close();
+		}
+
 		// FIXME execute removal of absent tasks from database
 	}
 
-	public static List<Task> getTaskList(User user) throws SQLException {
+	public static List<Task> findTaskListByUser(User user) throws SQLException {
 		
 		ResultSet resultSet = getConnection().prepareStatement("select * from task where user_id = "
 				+ user.getId()).executeQuery();
@@ -117,4 +174,37 @@ public class PersistenceService {
 		
 		return null;
 	}
+	
+	/*
+	 * public void updateCoffeeSales(HashMap<String, Integer> salesForWeek) throws
+	 * SQLException {
+	 * 
+	 * Connection con = getConnection(); PreparedStatement updateSales = null;
+	 * PreparedStatement updateTotal = null;
+	 * 
+	 * String updateString = "update " + dbName + ".COFFEES " +
+	 * "set SALES = ? where COF_NAME = ?";
+	 * 
+	 * String updateStatement = "update " + dbName + ".COFFEES " +
+	 * "set TOTAL = TOTAL + ? " + "where COF_NAME = ?";
+	 * 
+	 * try { con.setAutoCommit(false); updateSales =
+	 * con.prepareStatement(updateString); updateTotal =
+	 * con.prepareStatement(updateStatement);
+	 * 
+	 * for (Map.Entry<String, Integer> e : salesForWeek.entrySet()) {
+	 * 
+	 * updateSales.setInt(1, e.getValue().intValue()); updateSales.setString(2,
+	 * e.getKey()); updateSales.executeUpdate();
+	 * 
+	 * updateTotal.setInt(1, e.getValue().intValue()); updateTotal.setString(2,
+	 * e.getKey()); updateTotal.executeUpdate();
+	 * 
+	 * con.commit(); } } catch (SQLException e ) {
+	 * JDBCTutorialUtilities.printSQLException(e); if (con != null) { try {
+	 * System.err.print("Transaction is being rolled back"); con.rollback(); }
+	 * catch(SQLException excep) { JDBCTutorialUtilities.printSQLException(excep); }
+	 * } } finally { if (updateSales != null) { updateSales.close(); } if
+	 * (updateTotal != null) { updateTotal.close(); } con.setAutoCommit(true); } }
+	 */
 }

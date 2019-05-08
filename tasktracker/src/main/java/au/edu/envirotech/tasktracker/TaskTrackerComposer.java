@@ -40,7 +40,7 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 			// executa os binds
 			ConventionWires.wireFellows(getBinder().getView().getSpaceOwner(), this);
 			
-			taskList = PersistenceService.getTaskList((User) Sessions.getCurrent().getAttribute("auth_usr"));
+			taskList = PersistenceService.findTaskListByUser((User) Sessions.getCurrent().getAttribute("auth_usr"));
 			
 			// initializes the list with one blank task
 			if (taskList == null || taskList.isEmpty()) {
@@ -98,6 +98,11 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 	}
 
 	public void saveTaskList() {
+		
+		if (taskList.isEmpty()) {
+			Messagebox.show("You can't save a blank list.", "Persistence failed", 1, Messagebox.ERROR, null);
+			return;
+		}
 
 		// TODO Validate data
 
@@ -110,6 +115,6 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 			return;
 		}
 
-		Messagebox.show("User successfully registered", "Registration success", 1, Messagebox.INFORMATION, null);
+		Messagebox.show("All your tasks are saved!", "Task Tracker - Success!", 1, Messagebox.INFORMATION, null);
 	}
 }
