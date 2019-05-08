@@ -19,7 +19,6 @@ public class PersistenceService {
 		try {
 			Class.forName("org.postgresql.Driver");
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -145,14 +144,12 @@ public class PersistenceService {
 			if (preparedStatementUpdate != null) preparedStatementUpdate.close();
 			if (preparedStatementDelete != null) preparedStatementDelete.close();
 		}
-
-		// FIXME execute removal of absent tasks from database
 	}
 
 	public static List<Task> findTaskListByUser(User user) throws SQLException {
 		
-		ResultSet resultSet = getConnection().prepareStatement("select * from task where user_id = "
-				+ user.getId()).executeQuery();
+		String stringSql = user != null ? "select * from task where user_id = " + user.getId() : "select t.*, u.email from task t join \"user\" u on u.id = t.user_id;"; 
+		ResultSet resultSet = getConnection().prepareStatement(stringSql).executeQuery();
 		
 		if (resultSet != null) {
 			
@@ -162,7 +159,7 @@ public class PersistenceService {
 				
 				Task t = new Task();
 				
-				t.setUser(user);
+				t.setUser(user != null ? user : new User(resultSet.getInt("user_id"), resultSet.getString("email")));
 				t.setId(resultSet.getInt("id"));
 				t.setDate(new Date(resultSet.getDate("date").getTime()));
 				
@@ -174,37 +171,48 @@ public class PersistenceService {
 		
 		return null;
 	}
-	
-	/*
-	 * public void updateCoffeeSales(HashMap<String, Integer> salesForWeek) throws
-	 * SQLException {
-	 * 
-	 * Connection con = getConnection(); PreparedStatement updateSales = null;
-	 * PreparedStatement updateTotal = null;
-	 * 
-	 * String updateString = "update " + dbName + ".COFFEES " +
-	 * "set SALES = ? where COF_NAME = ?";
-	 * 
-	 * String updateStatement = "update " + dbName + ".COFFEES " +
-	 * "set TOTAL = TOTAL + ? " + "where COF_NAME = ?";
-	 * 
-	 * try { con.setAutoCommit(false); updateSales =
-	 * con.prepareStatement(updateString); updateTotal =
-	 * con.prepareStatement(updateStatement);
-	 * 
-	 * for (Map.Entry<String, Integer> e : salesForWeek.entrySet()) {
-	 * 
-	 * updateSales.setInt(1, e.getValue().intValue()); updateSales.setString(2,
-	 * e.getKey()); updateSales.executeUpdate();
-	 * 
-	 * updateTotal.setInt(1, e.getValue().intValue()); updateTotal.setString(2,
-	 * e.getKey()); updateTotal.executeUpdate();
-	 * 
-	 * con.commit(); } } catch (SQLException e ) {
-	 * JDBCTutorialUtilities.printSQLException(e); if (con != null) { try {
-	 * System.err.print("Transaction is being rolled back"); con.rollback(); }
-	 * catch(SQLException excep) { JDBCTutorialUtilities.printSQLException(excep); }
-	 * } } finally { if (updateSales != null) { updateSales.close(); } if
-	 * (updateTotal != null) { updateTotal.close(); } con.setAutoCommit(true); } }
-	 */
+
+	public static List<User> findUserById(Integer... idArray) throws SQLException {
+		
+		List<User> userList = null;
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		String stringSql = "select * from public.user";
+		
+		if (idArray.length > 0) {
+			
+			stringSql += " where id in (";
+			
+			for (Integer integer : idArray) {
+				stringSql += integer + ",";
+			}
+			
+			stringSql = stringSql.substring(0, stringSql.length() - 1);
+			stringSql += ")";
+		}
+		
+		try {
+
+			preparedStatement = getConnection().prepareStatement(stringSql);
+			resultSet = preparedStatement.executeQuery();
+			
+			if (resultSet != null) {
+				
+				userList = new ArrayList<User>();
+				
+				while (resultSet.next()) {
+					userList.add(new User(resultSet.getInt("id"), resultSet.getString("email")));
+				}
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			preparedStatement.close();
+			resultSet.close();
+		}
+		
+		return userList;
+	}
 }

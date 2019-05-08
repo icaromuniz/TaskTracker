@@ -9,7 +9,7 @@
 		</hlayout>
 		
 		<groupbox open="false">
-			<caption tooltiptext="Click to colapse">Filtering</caption>
+			<caption tooltiptext="Click to toggle filtering options">Filtering</caption>
 			
 			<grid style="border: none;">
 				<columns>
@@ -23,7 +23,11 @@
 				</columns>
 				<rows>
 					<row>
-						<combobox></combobox>
+						<combobox id="comboboxUser" model="@load($composer.userList)" hflex="true" forward="onOK = buttonFilter.onClick">
+							<template name="model" var="user">
+								<comboitem label="@load(user.email)"></comboitem>
+							</template>
+						</combobox>
 						<datebox></datebox>
 						<combobox></combobox>
 						<textbox></textbox>
@@ -36,11 +40,9 @@
 					</row>
 					<row spans="7" style="padding: 7px;">
 						<cell align="center">
-							<label hflex="true"/>
-							<button label="Filter" iconSclass="z-icon-filter" tooltiptext="Load the records applying the filtering"/>
+							<button id="buttonFilter" label="Filter" iconSclass="z-icon-filter" onClick="$composer.filterTaskList()" tooltiptext="Load the records applying the filtering"/>
 							<space/>
 							<button label="Clean" iconSclass="z-icon-bars" />
-							<label hflex="true"/>
 						</cell>
 					</row>
 				</rows>
@@ -50,7 +52,7 @@
 
 		<separator />
 
-		<listbox id="listbox" model="@bind($composer.taskList)">
+		<listbox id="listbox" model="@bind($composer.taskList)" vflex="true">
 			<listhead>
 				<listheader label="User" hflex="min" sort="auto(date)" tooltiptext="Click to sort"/>
 				<listheader label="Date" hflex="min" />
@@ -103,10 +105,8 @@
 		
 		<hlayout style="text-align: center;">
 			<button label="Edit" href="/" iconSclass="z-icon-pencil" />
-			<space/>
-			<button iconSclass="z-icon-print" />
-			<space/>
-			<button iconSclass="z-icon-file-pdf-o" />
+			<space width="0px"/>
+			<button label="Pdf" iconSclass="z-icon-file-pdf-o" />
 		</hlayout>
 	</window>
 </zk>
