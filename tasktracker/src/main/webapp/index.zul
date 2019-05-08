@@ -10,7 +10,9 @@
 
 		<hlayout width="100%">
 			<textbox value='@load($composer.currentUser)' disabled="true"
-				style="font-weight: bold;" cols="50" />
+				style="font-weight: bold; text-align: center;" cols="50" />
+			<button onClick='Sessions.getCurrent().removeAttribute("auth_usr"); Executions.sendRedirect("/login.zul")'
+				iconSclass="z-icon-sign-out" tooltiptext="Logout from current user's session."/>
 			<label hflex="true" />
 			<button onClick="$composer.addTask()"
 				iconSclass="z-icon-plus" tooltiptext="Add another task" />
@@ -20,7 +22,7 @@
 
 		<separator />
 
-		<listbox id="listbox" model="@bind($composer.taskList)" multiple="true" checkmark="true">
+		<listbox id="listbox" model="@bind($composer.taskList)" multiple="true" checkmark="true" vflex="true">
 			<listhead>
 				<listheader label="Date" hflex="min" />
 				<listheader label="Department" hflex="min" />
@@ -97,9 +99,9 @@
 			<button label="Save" onClick="$composer.saveTaskList()" iconSclass="z-icon-save" tooltiptext="Save set as is" />
 			<space/>
 			<button href="/report.zul" label="Report" iconSclass="z-icon-bar-chart" tooltiptext="Go to Reporting and Filtering page"/>
-			<space/>
+			<!-- <space/>
 			<button onClick='Sessions.getCurrent().removeAttribute("auth_usr"); Executions.sendRedirect("/login.zul")'
-				label="Logout" iconSclass="z-icon-sign-out" tooltiptext="Leave"/>
+				label="Logout" iconSclass="z-icon-sign-out" tooltiptext="Leave"/> -->
 		</hlayout>
 	</window>
 </zk>

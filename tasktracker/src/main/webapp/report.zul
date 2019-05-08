@@ -2,22 +2,57 @@
 <zk>
 
 	<window id="window" title="Task Tracker" border="normal" vflex="1"
-		apply="au.edu.envirotech.tasktracker.TaskTrackerComposer">
-
-		<hlayout width="100%">
-			<textbox value='@load($composer.currentUser)' disabled="true"
-				style="font-weight: bold;" cols="50" />
-			<label hflex="true" />
-			<button onClick="$composer.addTask()"
-				iconSclass="z-icon-plus" tooltiptext="Add another task" />
-			<button onClick="$composer.removeTask()"
-				iconSclass="z-icon-minus" tooltiptext="Remove selected" />
+		apply="au.edu.envirotech.tasktracker.ReportComposer">
+		
+		<hlayout width="100%" style="text-align: center;">
+			<image src="/img/logo-small-new.jpg" style="align: center;"/>
 		</hlayout>
+		
+		<groupbox open="false">
+			<caption tooltiptext="Click to colapse">Filtering</caption>
+			
+			<grid style="border: none;">
+				<columns>
+					<column label="User"/>
+					<column label="Date"/>
+					<column label="Department"/>
+					<column label="Task Specification"/>
+					<column label="Start"/>
+					<column label="Finish"/>
+					<column label="Planned"/>
+				</columns>
+				<rows>
+					<row>
+						<combobox></combobox>
+						<datebox></datebox>
+						<combobox></combobox>
+						<textbox></textbox>
+						<timebox value="@load(task.start)" cols="6" format="HH:mm" />
+						<timebox value="@load(task.finish)" cols="6" format="HH:mm" />
+						<combobox cols="4">
+							<comboitem label="Yes" />
+							<comboitem label="No" />
+						</combobox>
+					</row>
+					<row spans="7" style="padding: 7px;">
+						<cell align="center">
+							<label hflex="true"/>
+							<button label="Filter" iconSclass="z-icon-filter" tooltiptext="Load the records applying the filtering"/>
+							<space/>
+							<button label="Clean" iconSclass="z-icon-bars" />
+							<label hflex="true"/>
+						</cell>
+					</row>
+				</rows>
+			</grid>
+			
+		</groupbox>
 
 		<separator />
 
-		<listbox id="listbox" model="@bind($composer.taskList)" multiple="true" checkmark="true">
+		<listbox id="listbox" model="@bind($composer.taskList)">
 			<listhead>
+				<listheader label="User" hflex="min" sort="auto(date)" tooltiptext="Click to sort"/>
 				<listheader label="Date" hflex="min" />
 				<listheader label="Department" hflex="min" />
 				<listheader label="Task Specification" />
@@ -25,66 +60,43 @@
 				<listheader label="Finish" hflex="min" />
 				<!-- <listheader label="Spent" hflex="min" /> -->
 				<listheader label="Planned" hflex="min" />
-				<listheader label="Notes (Optional)" />
+				<listheader label="Notes" />
 				<listheader label="Outcomes" />
 				<listheader label="Follow Up Action" />
 			</listhead>
 			<template name="model" var="task">
 				<listitem value="@bind(task)">
+					<listcell label="@load(task.user.email)"/>
+					<listcell label="@load(task.date)"/>
+					<listcell label="@load(task.department)"/>
 					<listcell>
-						<datebox value="@bind(task.date)" cols="10" />
-					</listcell>
-					<listcell label="@bind(task.department)">
-						<combobox autodrop="true" cols="20">
-							<comboitem label="Executive Management" />
-							<comboitem label="Sales" />
-							<comboitem label="Marketing" />
-							<comboitem label="Admin / Enrolments" />
-							<comboitem label="Academic" />
-							<comboitem label="RTO Compliance" />
-							<comboitem label="Finance" />
-							<comboitem label="HR" />
-							<comboitem label="ICT" />
-							<comboitem label="Quality Assurance" />
-							<comboitem label="Special Projects" />
-							<comboitem label="Other" />
-						</combobox>
+						<textbox value="@bind(task.description)" disabled="true" rows="3" hflex="true" maxlength="500"/>
 					</listcell>
 					<listcell>
-						<textbox value="@bind(task.description)"
-							rows="3" hflex="true" maxlength="500"/>
+						<textbox value="@bind(task.start)" cols="6" disabled="true"/>
 					</listcell>
-					<listcell>
-						<timebox value="@bind(task.start)" cols="6"
-							format="HH:mm" />
-					</listcell>
-					<listcell>
-						<timebox value="@load(task.finish)" cols="6"
-							format="HH:mm" />
-					</listcell>
+					<listcell label="@load(task.finish)"/>
 					<!-- <listcell>
 						<label value="${timeboxStart.value}"/>
 					</listcell> -->
+					<listcell label="@load(task.isPlannedTask())"/>
 					<listcell>
-						<combobox cols="4">
-							<comboitem label="Yes" />
-							<comboitem label="No" />
-						</combobox>
-					</listcell>
-					<listcell>
-						<textbox value="@bind(task.description)"
+						<textbox value="@bind(task.description)" disabled="true"
 							rows="3" hflex="true" maxlength="500" />
 					</listcell>
 					<listcell>
-						<textbox value="@bind(task.description)"
+						<textbox value="@bind(task.description)" disabled="true"
 							rows="3" hflex="true" maxlength="500" />
 					</listcell>
 					<listcell>
-						<textbox value="@bind(task.description)"
+						<textbox value="@bind(task.description)" disabled="true"
 							rows="3" hflex="true" maxlength="500" />
 					</listcell>
 				</listitem>
 			</template>
+			<listfoot>
+				<listfooter label="Summary..."/>
+			</listfoot>
 		</listbox>
 
 		<separator />
@@ -92,9 +104,9 @@
 		<hlayout style="text-align: center;">
 			<button label="Edit" href="/" iconSclass="z-icon-pencil" />
 			<space/>
-			<button label="Print" iconSclass="z-icon-print" />
+			<button iconSclass="z-icon-print" />
 			<space/>
-			<button label="Print" iconSclass="z-icon-file-pdf-o" />
+			<button iconSclass="z-icon-file-pdf-o" />
 		</hlayout>
 	</window>
 </zk>
