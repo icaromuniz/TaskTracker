@@ -90,9 +90,12 @@
 		<separator />
 		
 		<hlayout style="text-align: center;">
-			<button label="Save" onClick="$composer.saveTaskList()" iconSclass="z-icon-save" />
+			<button label="Save" onClick="$composer.saveTaskList()" iconSclass="z-icon-save" tooltiptext="Save set as is" />
 			<space/>
-			<button label="logout" iconSclass="z-icon-sign-out" onClick='Sessions.getCurrent().removeAttribute("auth_usr"); Executions.sendRedirect("/login.zul")'/>
+			<button href="/report.zul" label="Report" iconSclass="z-icon-bar-chart" tooltiptext="Go to Reporting and Filtering page"/>
+			<space/>
+			<button onClick='Sessions.getCurrent().removeAttribute("auth_usr"); Executions.sendRedirect("/login.zul")'
+				label="Logout" iconSclass="z-icon-sign-out" tooltiptext="Leave"/>
 		</hlayout>
 	</window>
 </zk>

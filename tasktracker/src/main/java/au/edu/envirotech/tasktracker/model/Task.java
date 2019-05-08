@@ -1,8 +1,6 @@
-package au.edu.envirotech.tasktracker;
+package au.edu.envirotech.tasktracker.model;
 
 import java.util.Date;
-
-import au.edu.envirotech.tasktracker.model.User;
 
 public class Task {
 

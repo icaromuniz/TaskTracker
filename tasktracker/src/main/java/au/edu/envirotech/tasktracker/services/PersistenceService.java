@@ -1,4 +1,4 @@
-package au.edu.envirotech.tasktracker;
+package au.edu.envirotech.tasktracker.services;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -9,6 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import au.edu.envirotech.tasktracker.model.Task;
 import au.edu.envirotech.tasktracker.model.User;
 
 public class PersistenceService {

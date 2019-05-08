@@ -14,6 +14,7 @@ import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.Textbox;
 
 import au.edu.envirotech.tasktracker.model.User;
+import au.edu.envirotech.tasktracker.services.PersistenceService;
 
 public class AuthenticationComposer extends BindComposer<Component> {
 
