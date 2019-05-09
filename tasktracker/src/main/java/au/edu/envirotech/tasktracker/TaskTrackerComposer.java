@@ -40,7 +40,7 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 			// executa os binds
 			ConventionWires.wireFellows(getBinder().getView().getSpaceOwner(), this);
 			
-			taskList = PersistenceService.findTaskListByUser((User) Sessions.getCurrent().getAttribute("auth_usr"));
+			taskList = PersistenceService.findTaskListByFilter((User) Sessions.getCurrent().getAttribute("auth_usr"), null);
 			
 			// initializes the list with one blank task
 			if (taskList == null || taskList.isEmpty()) {

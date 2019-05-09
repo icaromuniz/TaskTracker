@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,10 +147,16 @@ public class PersistenceService {
 		}
 	}
 
-	public static List<Task> findTaskListByUser(User user) throws SQLException {
+	public static List<Task> findTaskListByFilter(User user, java.util.Date date) throws SQLException {
 		
-		String stringSql = user != null ? "select * from task where user_id = " + user.getId() : "select t.*, u.email from task t join \"user\" u on u.id = t.user_id;"; 
-		ResultSet resultSet = getConnection().prepareStatement(stringSql).executeQuery();
+		String stringSql = user != null ? "select * from task where user_id = " + user.getId() : "select t.*, u.email from task t join \"user\" u on u.id = t.user_id where 1=1"; 
+		ResultSet resultSet = null;
+		
+		if (date != null) {
+			stringSql += " and date = \'" + new SimpleDateFormat("yyyy-MM-dd").format(date) + "\'";
+		}
+		
+		resultSet = getConnection().prepareStatement(stringSql).executeQuery();
 		
 		if (resultSet != null) {
 			
@@ -214,5 +221,13 @@ public class PersistenceService {
 		}
 		
 		return userList;
+	}
+	
+	public static String[] findDepartmentByFilter(String name) {
+		
+		String[] departmentArray = {"Executive", "Management", "Sales", "Marketing", "Admin / Enrolments", "Academic", "RTO Compliance",
+				"Finance", "HR", "ICT", "Quality Assurance", "Special Projects", "Other"};
+		
+		return departmentArray;
 	}
 }

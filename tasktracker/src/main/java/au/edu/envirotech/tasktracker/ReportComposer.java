@@ -1,6 +1,7 @@
 package au.edu.envirotech.tasktracker;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import org.zkoss.bind.BindComposer;
@@ -10,6 +11,7 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.ConventionWires;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Listbox;
 
 import au.edu.envirotech.tasktracker.model.Task;
@@ -35,14 +37,17 @@ public class ReportComposer extends BindComposer<Component> {
 			Executions.sendRedirect("/login.zul");
 		} else {
 			
+			User currentUser = (User) Sessions.getCurrent().getAttribute("auth_usr");
+			
 			super.doAfterCompose(comp);
 			
 			// executa os binds
 			ConventionWires.wireFellows(getBinder().getView().getSpaceOwner(), this);
 			
-			taskList = PersistenceService.findTaskListByUser((User) Sessions.getCurrent().getAttribute("auth_usr"));
+			// sets the logged user as initial filter
+			comboboxUser.setValue(currentUser.getEmail()); // FIXME
 			
-			getBinder().notifyChange(this, "*");
+			this.filterTaskList();
 		}
 	}
 
@@ -62,9 +67,11 @@ public class ReportComposer extends BindComposer<Component> {
 	
 	public void filterTaskList() {
 		
+		User userFilter = comboboxUser.getSelectedItem() != null ? (User) comboboxUser.getSelectedItem().getValue() : null;
+		Date dateFilter = ((Datebox)comboboxUser.getFellow("dateboxDate")).getValue();
+		
 		try {
-			taskList = PersistenceService.findTaskListByUser(comboboxUser.getSelectedItem() != null ?
-					(User) comboboxUser.getSelectedItem().getValue() : null);
+			taskList = PersistenceService.findTaskListByFilter(userFilter, dateFilter);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -90,5 +97,9 @@ public class ReportComposer extends BindComposer<Component> {
 		}
 		
 		return null;
+	}
+	
+	public String[] getDepartmentList() {
+		return PersistenceService.findDepartmentByFilter(null);
 	}
 }

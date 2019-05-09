@@ -28,8 +28,8 @@
 								<comboitem label="@load(user.email)"></comboitem>
 							</template>
 						</combobox>
-						<datebox></datebox>
-						<combobox></combobox>
+						<datebox id="dateboxDate" forward="onOK = buttonFilter.onClick"/>
+						<combobox id="comboboxDepartment" model="@load($composer.departmentList)" forward="onOK = buttonFilter.onClick"/>
 						<textbox></textbox>
 						<timebox value="@load(task.start)" cols="6" format="HH:mm" />
 						<timebox value="@load(task.finish)" cols="6" format="HH:mm" />
@@ -42,7 +42,8 @@
 						<cell align="center">
 							<button id="buttonFilter" label="Filter" iconSclass="z-icon-filter" onClick="$composer.filterTaskList()" tooltiptext="Load the records applying the filtering"/>
 							<space/>
-							<button label="Clean" iconSclass="z-icon-bars" />
+							<button label="Clean" iconSclass="z-icon-bars"
+								onClick="comboboxUser.setValue(null); dateboxDate.setValue(null); comboboxDepartment.setValue(null)"/>
 						</cell>
 					</row>
 				</rows>
