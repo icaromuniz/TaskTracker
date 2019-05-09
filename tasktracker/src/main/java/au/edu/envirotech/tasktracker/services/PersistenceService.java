@@ -15,16 +15,21 @@ import au.edu.envirotech.tasktracker.model.User;
 
 public class PersistenceService {
 	
+	private static Connection connection = null;
+	
 	private static Connection getConnection() throws SQLException {
 		
-		try {
-			Class.forName("org.postgresql.Driver");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+		if (connection == null) {
+			
+			try {
+				Class.forName("org.postgresql.Driver");
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+			
+			connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/envirotech",
+					"envirotech", "Burleigh7u8i9o0p");
 		}
-		
-		Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/envirotech",
-				"envirotech", "Burleigh7u8i9o0p");
 		
 		return connection;
 	}
@@ -88,11 +93,12 @@ public class PersistenceService {
 		return null;
 	}
 
-	public static void saveTaskList(List<Task> taskList) throws SQLException {
+	public static void persistTaskList(List<Task> taskList) throws SQLException {
 
-		String stringDelete = "delete from public.task where user_id = ? and id not in ("; // TODO delete absent records
-		String stringInsert = "insert into public.task (\"id\", \"user_id\", \"date\" ) values (nextval('task_seq'), ?, ?);";
 		String stringUpdate = ""; // TODO insert new records
+		String stringDelete = "delete from public.task where user_id = ? and id not in (";
+		String stringInsert = "insert into public.task (\"id\", \"user_id\", \"date\" , \"department\", \"description\", \"under_plan\") "
+				+ "values (nextval('task_seq'), ?, ?, ?, ?, ?);";
 
 		PreparedStatement preparedStatementInsert = null;
 		PreparedStatement preparedStatementUpdate = null;
@@ -126,6 +132,10 @@ public class PersistenceService {
 
 					preparedStatementInsert.setInt(1, task.getUser().getId());
 					preparedStatementInsert.setDate(2, new Date(task.getDate().getTime()));
+					preparedStatementInsert.setString(3, task.getDepartment());
+					preparedStatementInsert.setString(4, task.getDescription());
+					preparedStatementInsert.setBoolean(5, task.isUnderPlan());
+					
 					preparedStatementInsert.executeUpdate();
 
 				} else { // updating the existing task
@@ -147,14 +157,28 @@ public class PersistenceService {
 		}
 	}
 
-	public static List<Task> findTaskListByFilter(User user, java.util.Date date) throws SQLException {
+	public static List<Task> findTaskListByFilter(User user, java.util.Date date, String department, Boolean underPlan) throws SQLException {
 		
-		String stringSql = user != null ? "select * from task where user_id = " + user.getId() : "select t.*, u.email from task t join \"user\" u on u.id = t.user_id where 1=1"; 
+		String stringSql = "select t.*, u.email from task t join \"user\" u on u.id = t.user_id where 1=1"; 
 		ResultSet resultSet = null;
+		
+		if (user != null) {
+			 stringSql += " and t.user_id = " + user.getId();
+		}
 		
 		if (date != null) {
 			stringSql += " and date = \'" + new SimpleDateFormat("yyyy-MM-dd").format(date) + "\'";
 		}
+		
+		if (department != null && !department.isEmpty()) {
+			stringSql += " and t.department like '" + department + "'";
+		}
+		
+		if (underPlan != null) {
+			stringSql += " and under_plan = " + underPlan;
+		}
+		
+		stringSql += " order by t.user_id, t.date ";	
 		
 		resultSet = getConnection().prepareStatement(stringSql).executeQuery();
 		
@@ -169,6 +193,9 @@ public class PersistenceService {
 				t.setUser(user != null ? user : new User(resultSet.getInt("user_id"), resultSet.getString("email")));
 				t.setId(resultSet.getInt("id"));
 				t.setDate(new Date(resultSet.getDate("date").getTime()));
+				t.setDepartment(resultSet.getString("department"));
+				t.setDescription(resultSet.getString("description"));
+				t.setUnderPlan(resultSet.getBoolean("under_plan"));
 				
 				taskList.add(t);
 			}

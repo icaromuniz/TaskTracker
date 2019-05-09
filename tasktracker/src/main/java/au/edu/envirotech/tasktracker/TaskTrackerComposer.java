@@ -2,6 +2,7 @@ package au.edu.envirotech.tasktracker;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -10,9 +11,11 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zk.ui.util.ConventionWires;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
 
 import au.edu.envirotech.tasktracker.model.Task;
@@ -40,7 +43,8 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 			// executa os binds
 			ConventionWires.wireFellows(getBinder().getView().getSpaceOwner(), this);
 			
-			taskList = PersistenceService.findTaskListByFilter((User) Sessions.getCurrent().getAttribute("auth_usr"), null);
+			taskList = PersistenceService.findTaskListByFilter((User) Sessions.getCurrent().getAttribute("auth_usr"), 
+					null, null, null);
 			
 			// initializes the list with one blank task
 			if (taskList == null || taskList.isEmpty()) {
@@ -71,6 +75,15 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 
 		return user != null ? ((User) user).getEmail() : null;
 	}
+	
+	public List<String> getDepartmentList(){
+		return Arrays.asList(PersistenceService.findDepartmentByFilter(null));
+	}
+	
+	public List<String> getBooleanList(){
+		String[] stringArray = {"true", "false"};
+		return Arrays.asList(stringArray);
+	}
 
 	public List<Task> getTaskList() {
 		return taskList;
@@ -88,6 +101,8 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 		taskList.add(t);
 		
 		getBinder().notifyChange(this, "*");
+		
+		Clients.scrollIntoView(listbox.getLastChild());
 	}
 
 	public void removeTask() {
@@ -105,9 +120,12 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 		}
 
 		// TODO Validate data
+		for (Listitem listitem : listbox.getItems()) {
+//			listitem.get
+		}
 
 		try {
-			PersistenceService.saveTaskList(taskList);
+			PersistenceService.persistTaskList(taskList);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

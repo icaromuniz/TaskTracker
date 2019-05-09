@@ -1,8 +1,6 @@
 <?page title="Task Tracker icaro#linux" contentType="text/html;charset=UTF-8"?>
 <zk>
-
-	<window id="window" title="Task Tracker" border="normal" vflex="true"
-		apply="au.edu.envirotech.tasktracker.TaskTrackerComposer">
+	<window id="window" border="normal" apply="au.edu.envirotech.tasktracker.TaskTrackerComposer">
 		
 		<hlayout width="100%" style="text-align: center;">
 			<image src="/img/logo-small-new.jpg" style="align: center;"/>
@@ -22,43 +20,33 @@
 
 		<separator />
 
-		<listbox id="listbox" model="@bind($composer.taskList)" multiple="true" checkmark="true" vflex="true">
+		<listbox id="listbox" model="@bind($composer.taskList)" multiple="true" checkmark="true" vflex="true" rows="10" mold="paging">
 			<listhead>
-				<listheader label="Date" hflex="min" />
-				<listheader label="Department" hflex="min" />
-				<listheader label="Task Specification" />
-				<listheader label="Start" hflex="min" />
-				<listheader label="Finish" hflex="min" />
-				<!-- <listheader label="Spent" hflex="min" /> -->
-				<listheader label="Planned" hflex="min" />
-				<listheader label="Notes (Optional)" />
-				<listheader label="Outcomes" />
-				<listheader label="Follow Up Action" />
+				<listheader label="Date" hflex="min" sort="auto(date)"/>
+				<listheader label="Department" hflex="min" sort="auto(department)"/>
+				<listheader label="Task Description" sort="auto(description)"/>
+				<listheader label="Start" hflex="min" sort="auto(start)" />
+				<listheader label="Finish" hflex="min" sort="auto(finish)" />
+				<listheader label="Planned" hflex="min" sort="auto(underPlan)" />
+				<listheader label="Notes (Optional)" sort="auto(note)"/>
+				<listheader label="Outcomes" sort="auto(outcome)"/>
+				<listheader label="Follow Up Action" sort="auto(followUpAction)" />
 			</listhead>
 			<template name="model" var="task">
 				<listitem value="@bind(task)">
 					<listcell>
 						<datebox value="@bind(task.date)" cols="10" constraint="no empty, no future"/>
 					</listcell>
-					<listcell label="@bind(task.department)">
-						<combobox autodrop="true" cols="20">
-							<comboitem label="Executive Management" />
-							<comboitem label="Sales" />
-							<comboitem label="Marketing" />
-							<comboitem label="Admin / Enrolments" />
-							<comboitem label="Academic" />
-							<comboitem label="RTO Compliance" />
-							<comboitem label="Finance" />
-							<comboitem label="HR" />
-							<comboitem label="ICT" />
-							<comboitem label="Quality Assurance" />
-							<comboitem label="Special Projects" />
-							<comboitem label="Other" />
+					<listcell>
+						<combobox autodrop="true" cols="20" model="@load($composer.departmentList)" value="@bind(task.department)">
+							<template name="model" var="dept">
+								<comboitem label="@bind(dept)"/>
+							</template>
 						</combobox>
 					</listcell>
 					<listcell>
-						<textbox value="@bind(task.description)"
-							rows="3" hflex="true" maxlength="500"/>
+						<textbox value="@bind(task.description)" rows="3" hflex="true" maxlength="500"
+							placeholder="Please, describe the execution of the task..."/>
 					</listcell>
 					<listcell>
 						<timebox value="@bind(task.start)" cols="6"
@@ -72,9 +60,11 @@
 						<label value="${timeboxStart.value}"/>
 					</listcell> -->
 					<listcell>
-						<combobox cols="4" autodrop="true" autocomplete="true">
-							<comboitem label="Yes" />
-							<comboitem label="No" />
+						<combobox cols="4" autodrop="true" autocomplete="true" model='@load($composer.booleanList)' value="@bind(task.underPlan)"
+							style="@load(Boolean.parseBoolean(task.underPlan) ? 'color: blue;' : 'color: black;')">
+							<template name="model" var="label">
+								<comboitem label="@bind(label)"/>
+							</template>
 						</combobox>
 					</listcell>
 					<listcell>
@@ -97,6 +87,8 @@
 		
 		<hlayout style="text-align: center;">
 			<button label="Save" onClick="$composer.saveTaskList()" iconSclass="z-icon-save" tooltiptext="Save set as is" />
+			<space/>
+			<button href="/" label="Discard" iconSclass="z-icon-trash" tooltiptext="Discard all unsaved changes"/>
 			<space/>
 			<button href="/report.zul" label="Report" iconSclass="z-icon-bar-chart" tooltiptext="Go to Reporting and Filtering page"/>
 		</hlayout>

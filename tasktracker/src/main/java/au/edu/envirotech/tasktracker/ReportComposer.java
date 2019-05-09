@@ -43,11 +43,9 @@ public class ReportComposer extends BindComposer<Component> {
 			
 			// executa os binds
 			ConventionWires.wireFellows(getBinder().getView().getSpaceOwner(), this);
-			
-			// sets the logged user as initial filter
-			comboboxUser.setValue(currentUser.getEmail()); // FIXME
-			
-			this.filterTaskList();
+
+			// load user's set of tasks
+			this.filterTaskList(currentUser);
 		}
 	}
 
@@ -65,13 +63,17 @@ public class ReportComposer extends BindComposer<Component> {
 		return user != null ? ((User) user).getEmail() : null;
 	}
 	
-	public void filterTaskList() {
+	public void filterTaskList(User currentUser) {
 		
 		User userFilter = comboboxUser.getSelectedItem() != null ? (User) comboboxUser.getSelectedItem().getValue() : null;
 		Date dateFilter = ((Datebox)comboboxUser.getFellow("dateboxDate")).getValue();
+		String departmentFilter = ((Combobox)comboboxUser.getFellow("comboboxDepartment")).getValue();
+		String stringUnderPlan = ((Combobox)comboboxUser.getFellow("comboboxUnderPlan")).getValue();
+		Boolean underPlan = stringUnderPlan != null && !stringUnderPlan.isEmpty() ? "true".equalsIgnoreCase(stringUnderPlan) : null;
 		
 		try {
-			taskList = PersistenceService.findTaskListByFilter(userFilter, dateFilter);
+			taskList = PersistenceService.findTaskListByFilter(currentUser != null ? currentUser : userFilter,
+					dateFilter, departmentFilter, underPlan);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

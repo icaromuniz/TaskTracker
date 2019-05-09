@@ -11,7 +11,7 @@ public class Task {
 	private String description;
 	private Date start;
 	private Date finish;
-	private boolean plannedTask;
+	private boolean underPlan;
 	private String note;
 	private String outcome;
 	private String followUpAction;
@@ -80,12 +80,12 @@ public class Task {
 		this.note = note;
 	}
 
-	public boolean isPlannedTask() {
-		return plannedTask;
+	public boolean isUnderPlan() {
+		return underPlan;
 	}
 
-	public void setPlannedTask(boolean plannedTask) {
-		this.plannedTask = plannedTask;
+	public void setUnderPlan(boolean underPlan) {
+		this.underPlan = underPlan;
 	}
 
 	public String getOutcome() {
