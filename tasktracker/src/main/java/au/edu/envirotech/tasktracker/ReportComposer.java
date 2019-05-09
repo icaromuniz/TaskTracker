@@ -1,6 +1,6 @@
 package au.edu.envirotech.tasktracker;
 
-import java.util.ArrayList;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.zkoss.bind.BindComposer;
@@ -9,6 +9,7 @@ import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.ConventionWires;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Listbox;
 
 import au.edu.envirotech.tasktracker.model.Task;
@@ -21,6 +22,9 @@ public class ReportComposer extends BindComposer<Component> {
 
 	@Wire
 	private Listbox listbox;
+	
+	@Wire
+	private Combobox comboboxUser;
 
 	private List<Task> taskList;
 
@@ -38,16 +42,6 @@ public class ReportComposer extends BindComposer<Component> {
 			
 			taskList = PersistenceService.findTaskListByUser((User) Sessions.getCurrent().getAttribute("auth_usr"));
 			
-			// initializes the list with one blank task
-			if (taskList == null || taskList.isEmpty()) {
-				
-				taskList = new ArrayList<Task>();
-				Task t = new Task();
-				
-				t.setUser((User) Sessions.getCurrent().getAttribute("auth_usr"));
-				taskList.add(t);
-			}
-			
 			getBinder().notifyChange(this, "*");
 		}
 	}
@@ -62,10 +56,21 @@ public class ReportComposer extends BindComposer<Component> {
 	}
 
 	public String getCurrentUser() {
-
 		Object user = Sessions.getCurrent().getAttribute("auth_usr");
-
 		return user != null ? ((User) user).getEmail() : null;
+	}
+	
+	public void filterTaskList() {
+		
+		try {
+			taskList = PersistenceService.findTaskListByUser(comboboxUser.getSelectedItem() != null ?
+					(User) comboboxUser.getSelectedItem().getValue() : null);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		getBinder().notifyChange(this, "*");
 	}
 
 	public List<Task> getTaskList() {
@@ -74,5 +79,16 @@ public class ReportComposer extends BindComposer<Component> {
 
 	public void setTaskList(List<Task> taskList) {
 		this.taskList = taskList;
+	}
+	
+	public List<User> getUserList() {
+		try {
+			return PersistenceService.findUserById(new Integer[0]);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 }

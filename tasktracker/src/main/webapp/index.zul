@@ -1,7 +1,7 @@
 <?page title="Task Tracker icaro#linux" contentType="text/html;charset=UTF-8"?>
 <zk>
 
-	<window id="window" title="Task Tracker" border="normal" vflex="1"
+	<window id="window" title="Task Tracker" border="normal" vflex="true"
 		apply="au.edu.envirotech.tasktracker.TaskTrackerComposer">
 		
 		<hlayout width="100%" style="text-align: center;">
@@ -38,7 +38,7 @@
 			<template name="model" var="task">
 				<listitem value="@bind(task)">
 					<listcell>
-						<datebox value="@bind(task.date)" cols="10" />
+						<datebox value="@bind(task.date)" cols="10" constraint="no empty, no future"/>
 					</listcell>
 					<listcell label="@bind(task.department)">
 						<combobox autodrop="true" cols="20">
@@ -72,7 +72,7 @@
 						<label value="${timeboxStart.value}"/>
 					</listcell> -->
 					<listcell>
-						<combobox cols="4">
+						<combobox cols="4" autodrop="true" autocomplete="true">
 							<comboitem label="Yes" />
 							<comboitem label="No" />
 						</combobox>
@@ -86,7 +86,7 @@
 							rows="3" hflex="true" maxlength="500" />
 					</listcell>
 					<listcell>
-						<textbox value="@bind(task.description)"
+						<textbox value="@bind(task.description)" constraint="no empty"
 							rows="3" hflex="true" maxlength="500" />
 					</listcell>
 				</listitem>
@@ -99,9 +99,6 @@
 			<button label="Save" onClick="$composer.saveTaskList()" iconSclass="z-icon-save" tooltiptext="Save set as is" />
 			<space/>
 			<button href="/report.zul" label="Report" iconSclass="z-icon-bar-chart" tooltiptext="Go to Reporting and Filtering page"/>
-			<!-- <space/>
-			<button onClick='Sessions.getCurrent().removeAttribute("auth_usr"); Executions.sendRedirect("/login.zul")'
-				label="Logout" iconSclass="z-icon-sign-out" tooltiptext="Leave"/> -->
 		</hlayout>
 	</window>
 </zk>
