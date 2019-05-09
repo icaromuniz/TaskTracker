@@ -13,17 +13,17 @@
 			
 			<grid style="border: none;">
 				<columns>
-					<column label="User"/>
-					<column label="Date"/>
-					<column label="Department"/>
+					<column label="User" hflex="min"/>
+					<column label="Date" hflex="min"/>
+					<column label="Department" hflex="min"/>
 					<column label="Task Specification"/>
-					<column label="Start"/>
-					<column label="Finish"/>
-					<column label="Planned"/>
+					<column label="Start" hflex="min"/>
+					<column label="Finish" hflex="min"/>
+					<column label="Planned" hflex="min"/>
 				</columns>
 				<rows>
 					<row>
-						<combobox id="comboboxUser" model="@load($composer.userList)" hflex="true" forward="onOK = buttonFilter.onClick">
+						<combobox id="comboboxUser" model="@load($composer.userList)" forward="onOK = buttonFilter.onClick">
 							<template name="model" var="user">
 								<comboitem label="@load(user.email)"/>
 							</template>
@@ -43,7 +43,7 @@
 							<button id="buttonFilter" label="Filter" iconSclass="z-icon-filter" onClick="$composer.filterTaskList(null)"
 								tooltiptext="Load the records applying the filtering"/>
 							<space/>
-							<button label="Clear" iconSclass="z-icon-bars"
+							<button label="Clear" iconSclass="z-icon-bars" tooltiptext="Clear filter fields"
 								onClick="comboboxUser.setValue(null); dateboxDate.setValue(null); comboboxDepartment.setValue(null);
 									comboboxUnderPlan.setValue(null); textboxDescription.setValue(null)"/>
 						</cell>
@@ -105,7 +105,7 @@
 		<separator />
 		
 		<hlayout style="text-align: center;">
-			<button label="Edit" href="/" iconSclass="z-icon-pencil" />
+			<button label="Form" href="/" iconSclass="z-icon-pencil" />
 			<space width="0px"/>
 			<button label="Pdf" iconSclass="z-icon-file-pdf-o" />
 		</hlayout>

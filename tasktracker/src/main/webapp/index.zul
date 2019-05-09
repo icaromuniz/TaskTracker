@@ -5,21 +5,16 @@
 		<hlayout width="100%" style="text-align: center;">
 			<image src="/img/logo-small-new.jpg" style="align: center;"/>
 		</hlayout>
-
-		<hlayout width="100%">
-			<textbox value='@load($composer.currentUser)' disabled="true"
-				style="font-weight: bold; text-align: center;" cols="50" />
-			<button onClick='Sessions.getCurrent().removeAttribute("auth_usr"); Executions.sendRedirect("/login.zul")'
-				iconSclass="z-icon-sign-out" tooltiptext="Logout from current user's session."/>
+		
+		<hlayout width="100%" valign="middle" style="padding-bottom: 2px;">
+			<button label="@load($composer.currentUser)" style="font-size: 25px; font-style: italic;" iconSclass="z-icon-user"/>
+			<a label="Logout" iconSclass="z-icon-sign-out" style="padding-left: 5px; font-size: large;"
+				onClick='Sessions.getCurrent().removeAttribute("auth_usr"); Executions.sendRedirect("/login.zul")'/>
 			<label hflex="true" />
-			<button onClick="$composer.addTask()"
-				iconSclass="z-icon-plus" tooltiptext="Add another task" />
-			<button onClick="$composer.removeTask()"
-				iconSclass="z-icon-minus" tooltiptext="Remove selected" />
+			<button onClick="$composer.addTask()" iconSclass="z-icon-plus" tooltiptext="Add another task" />
+			<button onClick="$composer.removeTask()" iconSclass="z-icon-minus" tooltiptext="Remove selected" />
 		</hlayout>
-
-		<separator />
-
+		
 		<listbox id="listbox" model="@bind($composer.taskList)" multiple="true" checkmark="true" vflex="true" rows="10" mold="paging">
 			<listhead>
 				<listheader label="Date" hflex="min" sort="auto(date)"/>
