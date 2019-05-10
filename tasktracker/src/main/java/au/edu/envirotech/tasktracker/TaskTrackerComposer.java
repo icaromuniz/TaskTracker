@@ -79,11 +79,6 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 	public List<String> getDepartmentList(){
 		return Arrays.asList(PersistenceService.findDepartmentByFilter(null));
 	}
-	
-	public List<Boolean> getBooleanList(){
-		Boolean[] stringArray = {new Boolean(true), new Boolean(false)};
-		return Arrays.asList(stringArray);
-	}
 
 	public List<Task> getTaskList() {
 		return taskList;

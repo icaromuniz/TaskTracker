@@ -88,6 +88,14 @@ public class Task {
 		this.underPlan = underPlan;
 	}
 
+	public String getUnderPlanLabel() {
+		return underPlan ? "Yes" : "No";
+	}
+
+	public void setUnderPlanLabel(String underPlanLabel) {
+		this.underPlan = "Yes".equalsIgnoreCase(underPlanLabel);
+	}
+
 	public String getOutcome() {
 		return outcome;
 	}

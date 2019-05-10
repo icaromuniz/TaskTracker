@@ -62,10 +62,10 @@
 				<listheader label="Date" hflex="min" sort="auto(date)" tooltiptext="Click to sort"/>
 				<listheader label="Department" hflex="min" sort="auto(department)" tooltiptext="Click to sort"/>
 				<listheader label="Task Specification" sort="auto(description)"/>
-				<listheader label="Start" hflex="min" sort="auto(start)" />
-				<listheader label="Finish" hflex="min" sort="auto(finish)" />
+				<listheader label="Start" hflex="min" sort="auto(start)" align="center"/>
+				<listheader label="Finish" hflex="min" sort="auto(finish)" align="center"/>
 				<!-- <listheader label="Spent" hflex="min" /> -->
-				<listheader label="Planned" hflex="min" sort="auto(underPlan)" tooltiptext="Click to sort"/>
+				<listheader label="Planned" hflex="min" sort="auto(underPlan)" tooltiptext="Click to sort" align="center"/>
 				<listheader label="Notes" sort="auto(note)" />
 				<listheader label="Outcomes" sort="auto(outcome)" />
 				<listheader label="Follow Up Action" sort="auto(followUpAction)" />

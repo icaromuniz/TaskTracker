@@ -55,12 +55,10 @@
 						<label value="${timeboxStart.value}"/>
 					</listcell> -->
 					<listcell>
-						<combobox cols="4" autodrop="true" autocomplete="true" model='@load($composer.booleanList)' value="@bind(task.underPlan)"
-							itemRenderer="au.edu.envirotech.tasktracker.services.ComboitemYesNoRenderer"
+						<combobox cols="4" autodrop="true" autocomplete="true" value="@bind(task.underPlanLabel)"
 							style="@load(Boolean.parseBoolean(task.underPlan) ? 'color: blue;' : 'color: black;')">
-							<template name="model" var="label">
-								<comboitem label="@bind(label)"/>
-							</template>
+							<comboitem label="Yes"/>
+							<comboitem label="No"/>
 						</combobox>
 						<!-- <combobox cols="4" autodrop="true" autocomplete="true" model='@load($composer.booleanList)' value="@bind(task.underPlan)"
 							style="@load(Boolean.parseBoolean(task.underPlan) ? 'color: blue;' : 'color: black;')">
