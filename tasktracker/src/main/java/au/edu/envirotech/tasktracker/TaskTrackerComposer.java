@@ -80,8 +80,8 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 		return Arrays.asList(PersistenceService.findDepartmentByFilter(null));
 	}
 	
-	public List<String> getBooleanList(){
-		String[] stringArray = {"true", "false"};
+	public List<Boolean> getBooleanList(){
+		Boolean[] stringArray = {new Boolean(true), new Boolean(false)};
 		return Arrays.asList(stringArray);
 	}
 

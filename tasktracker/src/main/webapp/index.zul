@@ -56,11 +56,18 @@
 					</listcell> -->
 					<listcell>
 						<combobox cols="4" autodrop="true" autocomplete="true" model='@load($composer.booleanList)' value="@bind(task.underPlan)"
+							itemRenderer="au.edu.envirotech.tasktracker.services.ComboitemYesNoRenderer"
 							style="@load(Boolean.parseBoolean(task.underPlan) ? 'color: blue;' : 'color: black;')">
 							<template name="model" var="label">
 								<comboitem label="@bind(label)"/>
 							</template>
 						</combobox>
+						<!-- <combobox cols="4" autodrop="true" autocomplete="true" model='@load($composer.booleanList)' value="@bind(task.underPlan)"
+							style="@load(Boolean.parseBoolean(task.underPlan) ? 'color: blue;' : 'color: black;')">
+							<template name="model" var="label">
+								<comboitem label="@bind(label)"/>
+							</template>
+						</combobox> -->
 					</listcell>
 					<listcell>
 						<textbox value="@bind(task.description)"
