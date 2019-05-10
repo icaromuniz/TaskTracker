@@ -11,8 +11,10 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.ConventionWires;
 import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Comboitem;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Listbox;
+import org.zkoss.zul.Textbox;
 
 import au.edu.envirotech.tasktracker.model.Task;
 import au.edu.envirotech.tasktracker.model.User;
@@ -64,21 +66,24 @@ public class ReportComposer extends BindComposer<Component> {
 	}
 	
 	public void filterTaskList(User currentUser) {
-		
+
+		Comboitem comboitemUnderPlan = ((Combobox) comboboxUser.getFellow("comboboxUnderPlan")).getSelectedItem();
+		Comboitem comboitemDepartment = ((Combobox) comboboxUser.getFellow("comboboxDepartment")).getSelectedItem();
+
 		User userFilter = comboboxUser.getSelectedItem() != null ? (User) comboboxUser.getSelectedItem().getValue() : null;
-		Date dateFilter = ((Datebox)comboboxUser.getFellow("dateboxDate")).getValue();
-		String departmentFilter = ((Combobox)comboboxUser.getFellow("comboboxDepartment")).getValue();
-		String stringUnderPlan = ((Combobox)comboboxUser.getFellow("comboboxUnderPlan")).getValue();
-		Boolean underPlan = stringUnderPlan != null && !stringUnderPlan.isEmpty() ? "true".equalsIgnoreCase(stringUnderPlan) : null;
-		
+		Date dateFilter = ((Datebox) comboboxUser.getFellow("dateboxDate")).getValue();
+		String departmentFilter = comboitemDepartment != null ? (String) comboitemDepartment.getValue() : null;
+		Boolean underPlan = comboitemUnderPlan != null ? Boolean.parseBoolean((String) comboitemUnderPlan.getValue()) : null;
+		String description = ((Textbox) comboboxUser.getFellow("textboxDescription")).getValue();
+
 		try {
 			taskList = PersistenceService.findTaskListByFilter(currentUser != null ? currentUser : userFilter,
-					dateFilter, departmentFilter, underPlan);
+					dateFilter, departmentFilter, description, underPlan);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		getBinder().notifyChange(this, "*");
 	}
 

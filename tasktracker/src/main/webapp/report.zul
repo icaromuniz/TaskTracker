@@ -16,7 +16,7 @@
 					<column label="User" hflex="min"/>
 					<column label="Date" hflex="min"/>
 					<column label="Department" hflex="min"/>
-					<column label="Task Specification"/>
+					<column label="Keywords in Task Specification"/>
 					<column label="Start" hflex="min"/>
 					<column label="Finish" hflex="min"/>
 					<column label="Planned" hflex="min"/>
@@ -30,12 +30,13 @@
 						</combobox>
 						<datebox id="dateboxDate" forward="onOK = buttonFilter.onClick"/>
 						<combobox id="comboboxDepartment" model="@load($composer.departmentList)" forward="onOK = buttonFilter.onClick"/>
-						<textbox id="textboxDescription" hflex="true" placeholder="Keywords for the task description..." />
+						<textbox id="textboxDescription" hflex="true" forward="onOK = buttonFilter.onClick" 
+							placeholder="Keywords present in the Task Description..." />
 						<timebox value="@load(task.start)" cols="6" format="HH:mm" disabled="true"/>
 						<timebox value="@load(task.finish)" cols="6" format="HH:mm" disabled="true"/>
-						<combobox id="comboboxUnderPlan" cols="4"  forward="onOK = buttonFilter.onClick">
-							<comboitem label="True" value="true"/>
-							<comboitem label="False" value="false"/>
+						<combobox id="comboboxUnderPlan" cols="4" forward="onOK = buttonFilter.onClick">
+							<comboitem label="Yes" value="true"/>
+							<comboitem label="No" value="false"/>
 						</combobox>
 					</row>
 					<row spans="7" style="padding: 7px;">
@@ -82,7 +83,7 @@
 					<!-- <listcell>
 						<label value="${timeboxStart.value}"/>
 					</listcell> -->
-					<listcell label="@load(task.isUnderPlan().toString())" style="@load(task.isUnderPlan() ? 'color: DodgerBlue; font-weight: bold;' : 'color: black;')"/>
+					<listcell label='@load(task.isUnderPlan() ? "Yes" : "No")' style="@load(task.isUnderPlan() ? 'color: DodgerBlue; font-weight: bold;' : 'color: black;')"/>
 					<listcell>
 						<textbox value="@bind(task.description)" disabled="true"
 							rows="3" hflex="true" maxlength="500" />

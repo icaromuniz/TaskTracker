@@ -157,28 +157,47 @@ public class PersistenceService {
 		}
 	}
 
-	public static List<Task> findTaskListByFilter(User user, java.util.Date date, String department, Boolean underPlan) throws SQLException {
+	public static List<Task> findTaskListByFilter(User user, java.util.Date date, String department, String description, Boolean underPlan) throws SQLException {
 		
 		String stringSql = "select t.*, u.email from task t join \"user\" u on u.id = t.user_id where 1=1"; 
 		ResultSet resultSet = null;
 		
+		// user
 		if (user != null) {
 			 stringSql += " and t.user_id = " + user.getId();
 		}
 		
+		// date
 		if (date != null) {
 			stringSql += " and date = \'" + new SimpleDateFormat("yyyy-MM-dd").format(date) + "\'";
 		}
 		
+		// dept
 		if (department != null && !department.isEmpty()) {
 			stringSql += " and t.department like '" + department + "'";
 		}
 		
+		// description
+		if (description != null && !description.isEmpty()) {
+			
+			String[] keywordArray = description.split(" ");
+			// where str like any (values('AAA%'), ('BBB%'), ('CCC%'));
+			
+			stringSql += " and t.description like any (values";
+			
+			for (String word : keywordArray) {
+				stringSql += "('%" + word + "%'),";
+			}
+			
+			stringSql = stringSql.substring(0, stringSql.length() - 1) + ")";
+		}
+		
+		// planned or not
 		if (underPlan != null) {
 			stringSql += " and under_plan = " + underPlan;
 		}
 		
-		stringSql += " order by t.user_id, t.date ";	
+		stringSql += " order by email, t.date ";	
 		
 		resultSet = getConnection().prepareStatement(stringSql).executeQuery();
 		
