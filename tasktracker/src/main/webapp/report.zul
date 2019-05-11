@@ -1,7 +1,20 @@
 <?page title="Task Tracker icaro#linux" contentType="text/html;charset=UTF-8"?>
 <zk>
 
-	<window id="window" border="normal" apply="au.edu.envirotech.tasktracker.ReportComposer">
+	<window id="window" border="none" apply="au.edu.envirotech.tasktracker.ReportComposer">
+	
+	<style>
+	.z-listheader-content{
+		color: DodgerBlue;
+	}
+	.z-column-content{
+		color: DodgerBlue;
+	}
+	
+	.z-button {
+		color: DodgerBlue;
+	}
+	</style>
 		
 		<hlayout width="100%" style="text-align: center;">
 			<image src="/img/logo-small-new.jpg" style="align: center;"/>
@@ -11,7 +24,7 @@
 			<caption tooltiptext="Click to toggle filtering options" style="font-weight: bold; color: DodgerBlue; font-size: larger" label="Filter"
 				iconSclass="z-icon-filter"/>
 			
-			<grid style="border: none;">
+			<grid>
 				<columns>
 					<column label="User" hflex="min"/>
 					<column label="Date" hflex="min"/>
@@ -39,19 +52,17 @@
 							<comboitem label="No" value="false"/>
 						</combobox>
 					</row>
-					<row spans="7" style="padding: 7px;">
-						<cell align="center">
-							<button id="buttonFilter" label="Filter" iconSclass="z-icon-filter" onClick="$composer.filterTaskList(null)"
-								tooltiptext="Load the records applying the filtering"/>
-							<space/>
-							<button label="Clear" iconSclass="z-icon-bars" tooltiptext="Clear filter fields"
-								onClick="comboboxUser.setValue(null); dateboxDate.setValue(null); comboboxDepartment.setValue(null);
-									comboboxUnderPlan.setValue(null); textboxDescription.setValue(null)"/>
-						</cell>
-					</row>
 				</rows>
 			</grid>
-			
+			<separator/>
+			<div width="100%" align="center">
+				<button id="buttonFilter" label="Filter" iconSclass="z-icon-filter" onClick="$composer.filterTaskList(null)"
+					tooltiptext="Load the records applying the filtering"/>
+				<space width="5px;"/>
+				<button label="Clear" iconSclass="z-icon-trash" tooltiptext="Clear filter fields"
+					onClick="comboboxUser.setValue(null); dateboxDate.setValue(null); comboboxDepartment.setValue(null);
+						comboboxUnderPlan.setValue(null); textboxDescription.setValue(null)"/>
+			</div>
 		</groupbox>
 
 		<separator />

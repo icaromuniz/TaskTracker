@@ -1,10 +1,19 @@
 <?page title="Task Tracker icaro#linux" contentType="text/html;charset=UTF-8"?>
 <zk>
+	<style>
+	.z-caption-content{
+		color: DodgerBlue;
+	}
+		
+	.z-button {
+		color: DodgerBlue;
+	}
+	</style>
 	<space vflex="true" />
 	<hlayout>
 		<space hflex="true" />
-		<groupbox>
-			<caption>New user registration</caption>
+		<groupbox closable="false">
+			<caption iconSclass="z-icon-user-plus" label="New user registration"/>
 			<grid hflex="min" apply="au.edu.envirotech.tasktracker.AuthenticationComposer">
 				<rows>
 					<row>
@@ -24,9 +33,9 @@
 					</row>
 					<row spans="2" align="center">
 						<cell>
-							<button label="Register" onClick="$composer.registerUser()"/>
+							<button iconSclass="z-icon-check-square-o" label="Register" onClick="$composer.registerUser()"/>
 							<space/>
-							<button label="Cancel" onClick='Executions.sendRedirect("/login.zul")'/>
+							<button iconSclass="z-icon-undo" label="Cancel" onClick='Executions.sendRedirect("/login.zul")'/>
 						</cell>
 					</row>
 				</rows>

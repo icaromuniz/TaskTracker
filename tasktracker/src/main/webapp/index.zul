@@ -1,6 +1,15 @@
 <?page title="Task Tracker icaro#linux" contentType="text/html;charset=UTF-8"?>
 <zk>
-	<window id="window" border="normal" apply="au.edu.envirotech.tasktracker.TaskTrackerComposer">
+	<style>
+		.z-listheader-content{
+			color: DodgerBlue;
+		}
+		
+		.z-button {
+			color: DodgerBlue;
+		}
+	</style>
+	<window id="window" border="none" apply="au.edu.envirotech.tasktracker.TaskTrackerComposer">
 		
 		<hlayout width="100%" style="text-align: center;">
 			<image src="/img/logo-small-new.jpg" style="align: center;"/>
@@ -8,7 +17,7 @@
 		
 		<hlayout width="100%" valign="middle" style="padding-bottom: 2px;">
 			<button label="@load($composer.currentUser)" style="font-size: 25px; font-style: italic;" iconSclass="z-icon-user"/>
-			<a label="Logout" iconSclass="z-icon-sign-out" style="padding-left: 5px; font-size: large;"
+			<a label="Logout" iconSclass="z-icon-sign-out" style="padding-left: 5px; color: DodgerBlue;"
 				onClick='Sessions.getCurrent().removeAttribute("auth_usr"); Executions.sendRedirect("/login.zul")'/>
 			<label hflex="true" />
 			<button onClick="$composer.addTask()" iconSclass="z-icon-plus" tooltiptext="Add another task" />

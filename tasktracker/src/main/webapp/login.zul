@@ -1,12 +1,21 @@
 <?page title="Task Tracker icaro#linux" contentType="text/html;charset=UTF-8"?>
 <zk>
+	<style>
+	.z-caption-content{
+		color: DodgerBlue;
+	}
+		
+	.z-button {
+		color: DodgerBlue;
+	}
+	</style>
 	<div height="100%">
 		<space vflex="true" />
 		<div>
 			<hlayout>
 				<space hflex="true" />
 				<groupbox hflex="min" closable="false">
-					<caption>Login</caption>
+					<caption iconSclass="z-icon-user" label="Login"/>
 					<grid hflex="min" apply="au.edu.envirotech.tasktracker.AuthenticationComposer">
 						<rows>
 							<row>
