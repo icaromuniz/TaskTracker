@@ -97,7 +97,7 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 		
 		getBinder().notifyChange(this, "*");
 		
-		Clients.scrollIntoView(listbox.getLastChild());
+//		Clients.scrollIntoView(listbox.getLastChild().getPreviousSibling()); // FIXME
 	}
 
 	public void removeTask() {

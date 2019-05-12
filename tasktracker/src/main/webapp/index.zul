@@ -12,7 +12,7 @@
 	<window id="window" border="none" apply="au.edu.envirotech.tasktracker.TaskTrackerComposer">
 		
 		<hlayout width="100%" style="text-align: center;">
-			<image src="/img/logo-small-new.jpg" style="align: center;"/>
+			<image src="/img/logo-small-new.jpg" style="align: center;" height="100px"/>
 		</hlayout>
 		
 		<hlayout width="100%" valign="middle" style="padding-bottom: 2px;">
@@ -99,7 +99,7 @@
 			<space/>
 			<button href="/" label="Discard" iconSclass="z-icon-trash" tooltiptext="Discard all unsaved changes"/>
 			<space/>
-			<button href="/report.zul" label="Report" iconSclass="z-icon-bar-chart" tooltiptext="Go to Reporting and Filtering page"/>
+			<button href="/report.zul" label="Report" iconSclass="z-icon-list" tooltiptext="Go to Reporting and Filtering page"/>
 		</hlayout>
 	</window>
 </zk>

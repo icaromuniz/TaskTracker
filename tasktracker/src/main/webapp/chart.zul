@@ -1,0 +1,74 @@
+<?page title="Task Tracker icaro#linux" contentType="text/html;charset=UTF-8"?>
+<zk>
+	<window border="none" apply="au.edu.envirotech.tasktracker.BarStackedComposer" style="text-align: center;">
+		<style>
+		.z-button {
+			color: DodgerBlue;
+		}
+		</style>
+		
+		<hlayout width="100%">
+			<image src="/img/logo-small-new.jpg" style="align: center;" height="100px"/>
+		</hlayout>
+		
+		<groupbox style="font-weight: bold;">
+			<caption tooltiptext="Click to toggle filtering options" style="font-weight: bold; color: DodgerBlue; font-size: larger" label="Filter"
+				iconSclass="z-icon-filter"/>
+			
+			<grid>
+				<columns>
+					<column label="User" hflex="min"/>
+					<column label="Date" hflex="min"/>
+					<column label="Department" hflex="min"/>
+					<column label="Keywords in Task Specification"/>
+					<column label="Start" hflex="min"/>
+					<column label="Finish" hflex="min"/>
+					<column label="Planned" hflex="min"/>
+				</columns>
+				<rows>
+					<row>
+						<combobox id="comboboxUser" model="@load($composer.userList)" forward="onOK = buttonFilter.onClick">
+							<template name="model" var="user">
+								<comboitem label="@load(user.email)"/>
+							</template>
+						</combobox>
+						<datebox id="dateboxDate" forward="onOK = buttonFilter.onClick"/>
+						<combobox id="comboboxDepartment" model="@load($composer.departmentList)" forward="onOK = buttonFilter.onClick"/>
+						<textbox id="textboxDescription" hflex="true" forward="onOK = buttonFilter.onClick" 
+							placeholder="Keywords present in the Task Description..." />
+						<timebox value="@load(task.start)" cols="6" format="HH:mm" disabled="true"/>
+						<timebox value="@load(task.finish)" cols="6" format="HH:mm" disabled="true"/>
+						<combobox id="comboboxUnderPlan" cols="4" forward="onOK = buttonFilter.onClick">
+							<comboitem label="Yes" value="true"/>
+							<comboitem label="No" value="false"/>
+						</combobox>
+					</row>
+				</rows>
+			</grid>
+			
+			<separator/>
+			
+			<div width="100%" align="center">
+				<button id="buttonFilter" label="Filter" iconSclass="z-icon-filter" onClick="$composer.filterTaskList(null)"
+					tooltiptext="Load the records applying the filtering"/>
+				<space width="5px;"/>
+				<button label="Clear" iconSclass="z-icon-trash" tooltiptext="Clear filter fields"
+					onClick="comboboxUser.setValue(null); dateboxDate.setValue(null); comboboxDepartment.setValue(null);
+						comboboxUnderPlan.setValue(null); textboxDescription.setValue(null)"/>
+			</div>
+		</groupbox>
+		
+		<separator/>
+	
+	    <chart id="chart" type="bar" title="Tasks Tracked" hflex="true" threeD="true" orient="horizontal"/>
+	    <space/>
+	    <chart id="chartPie" type="pie" title="Tasks Tracked" hflex="true" threeD="true" orient="horizontal"/>
+	    
+	    <separator height="20px"/>
+	    <chart id="chartNew" type="stacked_bar" title="Department Tracked Tasks Chart" 
+	    	width="1200px" height="500px" threeD="true" orient="horizontal"/>
+	    	
+	    <separator height="20px"/>
+		<button href="/report.zul" label="Report" iconSclass="z-icon-list" tooltiptext="Go to Reporting and Filtering page"/>
+	</window>
+</zk>
