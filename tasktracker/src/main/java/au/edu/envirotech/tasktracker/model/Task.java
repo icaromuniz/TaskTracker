@@ -9,8 +9,8 @@ public class Task {
 	private Date date;
 	private String department;
 	private String description;
-	private Date start;
-	private Date finish;
+	private Date startTime;
+	private Date finishTime;
 	private boolean underPlan;
 	private String note;
 	private String outcome;
@@ -40,20 +40,20 @@ public class Task {
 		this.date = date;
 	}
 
-	public Date getStart() {
-		return start;
+	public Date getStartTime() {
+		return startTime;
 	}
 
-	public void setStart(Date start) {
-		this.start = start;
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
 	}
 
-	public Date getFinish() {
-		return finish;
+	public Date getFinishTime() {
+		return finishTime;
 	}
 
-	public void setFinish(Date finish) {
-		this.finish = finish;
+	public void setFinishTime(Date finish) {
+		this.finishTime = finish;
 	}
 
 	public String getDepartment() {

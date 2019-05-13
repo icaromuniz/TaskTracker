@@ -11,7 +11,6 @@ import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.select.annotation.Wire;
-import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zk.ui.util.ConventionWires;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
@@ -44,7 +43,7 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 			ConventionWires.wireFellows(getBinder().getView().getSpaceOwner(), this);
 			
 			taskList = PersistenceService.findTaskListByFilter((User) Sessions.getCurrent().getAttribute("auth_usr"), 
-					null, null, null, null);
+					null, null, null, null, null, null);
 			
 			// initializes the list with one blank task
 			if (taskList == null || taskList.isEmpty()) {

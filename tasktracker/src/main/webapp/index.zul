@@ -29,7 +29,7 @@
 				<listheader label="Date" hflex="min" sort="auto(date)"/>
 				<listheader label="Department" hflex="min" sort="auto(department)"/>
 				<listheader label="Task Description" sort="auto(description)"/>
-				<listheader label="Start" hflex="min" sort="auto(start)" />
+				<listheader label="Start" hflex="min" sort="auto(startTime)" />
 				<listheader label="Finish" hflex="min" sort="auto(finish)" />
 				<listheader label="Planned" hflex="min" sort="auto(underPlan)" />
 				<listheader label="Notes (Optional)" sort="auto(note)"/>
@@ -53,11 +53,11 @@
 							placeholder="Please, describe the execution of the task..."/>
 					</listcell>
 					<listcell>
-						<timebox value="@bind(task.start)" cols="6"
+						<timebox value="@bind(task.startTime)" cols="6"
 							format="HH:mm" />
 					</listcell>
 					<listcell>
-						<timebox value="@load(task.finish)" cols="6"
+						<timebox value="@load(task.finishTime)" cols="6"
 							format="HH:mm" />
 					</listcell>
 					<!-- <listcell>

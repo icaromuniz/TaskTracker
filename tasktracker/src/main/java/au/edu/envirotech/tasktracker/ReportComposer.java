@@ -75,10 +75,12 @@ public class ReportComposer extends BindComposer<Component> {
 		String departmentFilter = comboitemDepartment != null ? (String) comboitemDepartment.getValue() : null;
 		Boolean underPlan = comboitemUnderPlan != null ? Boolean.parseBoolean((String) comboitemUnderPlan.getValue()) : null;
 		String description = ((Textbox) comboboxUser.getFellow("textboxDescription")).getValue();
+		Date startTime = null; // FIXME
+		Date finishTime = null; // FIXME
 
 		try {
 			taskList = PersistenceService.findTaskListByFilter(currentUser != null ? currentUser : userFilter,
-					dateFilter, departmentFilter, description, underPlan);
+					dateFilter, departmentFilter, description, startTime, finishTime, underPlan);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

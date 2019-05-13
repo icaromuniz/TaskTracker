@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,8 +98,8 @@ public class PersistenceService {
 
 		String stringUpdate = ""; // TODO insert new records
 		String stringDelete = "delete from public.task where user_id = ? and id not in (";
-		String stringInsert = "insert into public.task (\"id\", \"user_id\", \"date\" , \"department\", \"description\", \"under_plan\") "
-				+ "values (nextval('task_seq'), ?, ?, ?, ?, ?);";
+		String stringInsert = "insert into public.task (\"id\", \"user_id\", \"date\" , \"department\", \"description\", \"under_plan\", "
+				+ "\"start_time\") values (nextval('task_seq'), ?, ?, ?, ?, ?, ?);";
 
 		PreparedStatement preparedStatementInsert = null;
 		PreparedStatement preparedStatementUpdate = null;
@@ -135,6 +136,7 @@ public class PersistenceService {
 					preparedStatementInsert.setString(3, task.getDepartment());
 					preparedStatementInsert.setString(4, task.getDescription());
 					preparedStatementInsert.setBoolean(5, task.isUnderPlan());
+					preparedStatementInsert.setTime(6, new Time(task.getStartTime().getTime()));
 					
 					preparedStatementInsert.executeUpdate();
 
@@ -157,7 +159,8 @@ public class PersistenceService {
 		}
 	}
 
-	public static List<Task> findTaskListByFilter(User user, java.util.Date date, String department, String description, Boolean underPlan) throws SQLException {
+	public static List<Task> findTaskListByFilter(User user, java.util.Date date, String department, String description,
+			java.util.Date startTime, java.util.Date finishTime, Boolean underPlan) throws SQLException {
 		
 		String stringSql = "select t.*, u.email from task t join \"user\" u on u.id = t.user_id where 1=1"; 
 		ResultSet resultSet = null;
@@ -183,10 +186,10 @@ public class PersistenceService {
 			String[] keywordArray = description.split(" ");
 			// where str like any (values('AAA%'), ('BBB%'), ('CCC%'));
 			
-			stringSql += " and t.description like any (values";
+			stringSql += " and lower(t.description) like any (values";
 			
 			for (String word : keywordArray) {
-				stringSql += "('%" + word + "%'),";
+				stringSql += "('%" + word.toLowerCase() + "%'),";
 			}
 			
 			stringSql = stringSql.substring(0, stringSql.length() - 1) + ")";
@@ -197,7 +200,12 @@ public class PersistenceService {
 			stringSql += " and under_plan = " + underPlan;
 		}
 		
-		stringSql += " order by email, t.date ";	
+		// start time
+		if (startTime != null) {
+			stringSql += " and start_time > " + startTime.getTime();
+		}
+		
+		stringSql += " order by email, t.date, t.start_time ";	
 		
 		resultSet = getConnection().prepareStatement(stringSql).executeQuery();
 		
@@ -215,6 +223,7 @@ public class PersistenceService {
 				t.setDepartment(resultSet.getString("department"));
 				t.setDescription(resultSet.getString("description"));
 				t.setUnderPlan(resultSet.getBoolean("under_plan"));
+				t.setStartTime(resultSet.getTime("start_time"));
 				
 				taskList.add(t);
 			}

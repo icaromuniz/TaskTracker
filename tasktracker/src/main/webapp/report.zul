@@ -36,7 +36,7 @@
 				</columns>
 				<rows>
 					<row>
-						<combobox id="comboboxUser" model="@load($composer.userList)" forward="onOK = buttonFilter.onClick">
+						<combobox id="comboboxUser" model="@load($composer.userList)" forward="onOK = buttonFilter.onClick" cols="40"> 
 							<template name="model" var="user">
 								<comboitem label="@load(user.email)"/>
 							</template>
@@ -73,8 +73,8 @@
 				<listheader label="Date" hflex="min" sort="auto(date)" tooltiptext="Click to sort"/>
 				<listheader label="Department" hflex="min" sort="auto(department)" tooltiptext="Click to sort"/>
 				<listheader label="Task Specification" sort="auto(description)"/>
-				<listheader label="Start" hflex="min" sort="auto(start)" align="center"/>
-				<listheader label="Finish" hflex="min" sort="auto(finish)" align="center"/>
+				<listheader label="Start" hflex="min" sort="auto(startTime)" align="center"/>
+				<listheader label="Finish" hflex="min" sort="auto(finishTime)" align="center"/>
 				<!-- <listheader label="Spent" hflex="min" /> -->
 				<listheader label="Planned" hflex="min" sort="auto(underPlan)" tooltiptext="Click to sort" align="center"/>
 				<listheader label="Notes" sort="auto(note)" />
@@ -89,8 +89,8 @@
 					<listcell>
 						<textbox value="@bind(task.description)" disabled="true" rows="3" hflex="true" maxlength="500"/>
 					</listcell>
-					<listcell label="00:00"/>
-					<listcell label="00:00"/>
+					<listcell label="@load(task.startTime) @converter('formatedDate', format='hh:mm')"/>
+					<listcell label="@load(task.finishTime) @converter('formatedDate', format='hh:mm')"/>
 					<!-- <listcell>
 						<label value="${timeboxStart.value}"/>
 					</listcell> -->
