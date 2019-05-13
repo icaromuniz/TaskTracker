@@ -95,11 +95,13 @@
 		<separator />
 		
 		<hlayout style="text-align: center;">
-			<button label="Save" onClick="$composer.saveTaskList()" iconSclass="z-icon-save" tooltiptext="Save set as is" />
+			<button label="Save" onClick="$composer.saveTaskList()" iconSclass="z-icon-save" tooltiptext="Save set as is" style="color: green;" />
 			<space/>
-			<button href="/" label="Discard" iconSclass="z-icon-trash" tooltiptext="Discard all unsaved changes"/>
+			<button href="/" label="Discard" iconSclass="z-icon-trash" tooltiptext="Discard all unsaved changes" style="color: green;" />
 			<space/>
 			<button href="/report.zul" label="Report" iconSclass="z-icon-list" tooltiptext="Go to Reporting and Filtering page"/>
+			<space/>
+			<button label="Chart" iconSclass="z-icon-bar-chart" href="/chart.zul" style="float: right;"/>
 		</hlayout>
 	</window>
 </zk>

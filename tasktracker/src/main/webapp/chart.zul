@@ -69,6 +69,8 @@
 	    	width="1200px" height="500px" threeD="true" orient="horizontal"/>
 	    	
 	    <separator height="20px"/>
+		<button label="Form" href="/" iconSclass="z-icon-pencil" />
+		<space/>
 		<button href="/report.zul" label="Report" iconSclass="z-icon-list" tooltiptext="Go to Reporting and Filtering page"/>
 	</window>
 </zk>

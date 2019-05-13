@@ -20,7 +20,7 @@
 			<image src="/img/logo-small-new.jpg" style="align: center;" height="100px"/>
 		</hlayout>
 		
-		<groupbox open="false" style="font-weight: bold;">
+		<groupbox style="font-weight: bold;">
 			<caption tooltiptext="Click to toggle filtering options" style="font-weight: bold; color: DodgerBlue; font-size: larger" label="Filter"
 				iconSclass="z-icon-filter"/>
 			
@@ -110,7 +110,7 @@
 				</listitem>
 			</template>
 			<listfoot>
-				<listfooter label="Summary..."/>
+				<listfooter label="Summary prototype..."/>
 			</listfoot>
 		</listbox>
 
