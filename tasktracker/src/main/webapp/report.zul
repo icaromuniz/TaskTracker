@@ -89,8 +89,8 @@
 					<listcell>
 						<textbox value="@bind(task.description)" disabled="true" rows="3" hflex="true" maxlength="500"/>
 					</listcell>
-					<listcell label="@load(task.startTime) @converter('formatedDate', format='hh:mm')"/>
-					<listcell label="@load(task.finishTime) @converter('formatedDate', format='hh:mm')"/>
+					<listcell label="@load(task.startTime) @converter('formatedDate', format='HH:mm')"/>
+					<listcell label="@load(task.finishTime) @converter('formatedDate', format='HH:mm')"/>
 					<!-- <listcell>
 						<label value="${timeboxStart.value}"/>
 					</listcell> -->

@@ -96,10 +96,12 @@ public class PersistenceService {
 
 	public static void persistTaskList(List<Task> taskList) throws SQLException {
 
-		String stringUpdate = ""; // TODO insert new records
+		String stringUpdate = "update task set date = ?, department = ?, description = ?, start_time = ?, finish_time = ?, "
+				+ "under_plan = ? where id = ?;"; // TODO insert new records
+		
 		String stringDelete = "delete from public.task where user_id = ? and id not in (";
-		String stringInsert = "insert into public.task (\"id\", \"user_id\", \"date\" , \"department\", \"description\", \"under_plan\", "
-				+ "\"start_time\") values (nextval('task_seq'), ?, ?, ?, ?, ?, ?);";
+		String stringInsert = "insert into public.task (\"id\", \"user_id\", \"date\", \"department\", \"description\", \"under_plan\", "
+				+ "\"start_time\", \"finish_time\") values (nextval('task_seq'), ?, ?, ?, ?, ?, ?, ?);";
 
 		PreparedStatement preparedStatementInsert = null;
 		PreparedStatement preparedStatementUpdate = null;
@@ -137,10 +139,22 @@ public class PersistenceService {
 					preparedStatementInsert.setString(4, task.getDescription());
 					preparedStatementInsert.setBoolean(5, task.isUnderPlan());
 					preparedStatementInsert.setTime(6, new Time(task.getStartTime().getTime()));
+					preparedStatementInsert.setTime(7, new Time(task.getFinishTime().getTime()));
 					
 					preparedStatementInsert.executeUpdate();
 
 				} else { // updating the existing task
+
+					preparedStatementUpdate.setDate(1, new Date(task.getDate().getTime()));
+					preparedStatementUpdate.setString(2, task.getDepartment());
+					preparedStatementUpdate.setString(3, task.getDescription());
+					preparedStatementUpdate.setTime(4, new Time(task.getStartTime().getTime()));
+					preparedStatementUpdate.setTime(5, new Time(task.getFinishTime().getTime()));
+					preparedStatementUpdate.setBoolean(6, task.isUnderPlan());
+
+					preparedStatementUpdate.setInt(7, task.getId());
+					
+					preparedStatementUpdate.executeUpdate();
 
 				}
 			}
@@ -202,7 +216,12 @@ public class PersistenceService {
 		
 		// start time
 		if (startTime != null) {
-			stringSql += " and start_time > " + startTime.getTime();
+			stringSql += " and start_time >= " + startTime.getTime();
+		}
+		
+		// finish time
+		if (finishTime != null) {
+			stringSql += " and finish_time <= " + finishTime.getTime();
 		}
 		
 		stringSql += " order by email, t.date, t.start_time ";	
@@ -224,6 +243,7 @@ public class PersistenceService {
 				t.setDescription(resultSet.getString("description"));
 				t.setUnderPlan(resultSet.getBoolean("under_plan"));
 				t.setStartTime(resultSet.getTime("start_time"));
+				t.setFinishTime(resultSet.getTime("finish_time"));
 				
 				taskList.add(t);
 			}
