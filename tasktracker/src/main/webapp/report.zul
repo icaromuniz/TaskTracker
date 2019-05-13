@@ -72,7 +72,7 @@
 				<listheader label="User" hflex="min" sort="auto(user.email)" tooltiptext="Click to sort"/>
 				<listheader label="Date" hflex="min" sort="auto(date)" tooltiptext="Click to sort"/>
 				<listheader label="Department" hflex="min" sort="auto(department)" tooltiptext="Click to sort"/>
-				<listheader label="Task Specification" sort="auto(description)"/>
+				<listheader label="Task Specification" width="30%" sort="auto(description)"/>
 				<listheader label="Start" hflex="min" sort="auto(startTime)" align="center"/>
 				<listheader label="Finish" hflex="min" sort="auto(finishTime)" align="center"/>
 				<!-- <listheader label="Spent" hflex="min" /> -->
@@ -87,7 +87,7 @@
 					<listcell label="@load(task.date) @converter('formatedDate', format='dd/MM/yyyy')" />
 					<listcell label="@load(task.department)"/>
 					<listcell>
-						<textbox value="@bind(task.description)" disabled="true" rows="3" hflex="true" maxlength="500"/>
+						<textbox value="@bind(task.description)" readonly="true" rows="3" hflex="true"/>
 					</listcell>
 					<listcell label="@load(task.startTime) @converter('formatedDate', format='HH:mm')"/>
 					<listcell label="@load(task.finishTime) @converter('formatedDate', format='HH:mm')"/>
@@ -96,15 +96,15 @@
 					</listcell> -->
 					<listcell label='@load(task.isUnderPlan() ? "Yes" : "No")' style="@load(task.isUnderPlan() ? 'color: DodgerBlue; font-weight: bold;' : 'color: black;')"/>
 					<listcell>
-						<textbox value="@bind(task.description)" disabled="true"
+						<textbox value="@bind(task.note)" readonly="true"
 							rows="3" hflex="true" maxlength="500" />
 					</listcell>
 					<listcell>
-						<textbox value="@bind(task.description)" disabled="true"
+						<textbox value="@bind(task.outcome)" readonly="true"
 							rows="3" hflex="true" maxlength="500" />
 					</listcell>
 					<listcell>
-						<textbox value="@bind(task.description)" disabled="true"
+						<textbox value="@bind(task.followUpAction)" readonly="true"
 							rows="3" hflex="true" maxlength="500" />
 					</listcell>
 				</listitem>

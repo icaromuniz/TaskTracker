@@ -10,12 +10,18 @@ import org.zkoss.bind.BindComposer;
 import org.zkoss.zk.ui.Component;
 import org.zkoss.zk.ui.Executions;
 import org.zkoss.zk.ui.Sessions;
+import org.zkoss.zk.ui.WrongValueException;
+import org.zkoss.zk.ui.WrongValuesException;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.ConventionWires;
+import org.zkoss.zul.Combobox;
+import org.zkoss.zul.Datebox;
 import org.zkoss.zul.ListModelList;
 import org.zkoss.zul.Listbox;
 import org.zkoss.zul.Listitem;
 import org.zkoss.zul.Messagebox;
+import org.zkoss.zul.Textbox;
+import org.zkoss.zul.Timebox;
 
 import au.edu.envirotech.tasktracker.model.Task;
 import au.edu.envirotech.tasktracker.model.User;
@@ -107,15 +113,48 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 	}
 
 	public void saveTaskList() {
-		
+
+		List<WrongValueException> validatioExceptionList = new ArrayList<WrongValueException>();
+
 		if (taskList.isEmpty()) {
 			Messagebox.show("You can't save a blank list.", "Persistence failed", 1, Messagebox.ERROR, null);
 			return;
 		}
 
-		// TODO Validate data
+		// validation
 		for (Listitem listitem : listbox.getItems()) {
-//			listitem.get
+
+			Datebox datebox = (Datebox) listitem.getFirstChild().getFirstChild();
+			Combobox comboboxDepartment = (Combobox) listitem.getFirstChild().getNextSibling().getFirstChild();
+			Textbox textboxDescription = (Textbox) listitem.getFirstChild().getNextSibling().getNextSibling().getFirstChild();
+			Timebox timeboxStart = (Timebox) listitem.getFirstChild().getNextSibling().getNextSibling().getNextSibling().getFirstChild();
+			Timebox timeboxFinish = (Timebox) listitem.getFirstChild().getNextSibling().getNextSibling().getNextSibling().getNextSibling()
+					.getFirstChild();
+			
+			if (datebox.getValue() == null) {
+				validatioExceptionList.add(new WrongValueException(datebox, "Mandatory field"));
+			}
+			
+			if (comboboxDepartment.getValue().isEmpty()) {
+				validatioExceptionList.add(new WrongValueException(comboboxDepartment, "Mandatory field"));
+			}
+			
+			if (textboxDescription.getValue().isEmpty()) {
+				validatioExceptionList.add(new WrongValueException(textboxDescription, "Mandatory field"));
+			}
+			
+			if (timeboxStart.getValue() == null) {
+				validatioExceptionList.add(new WrongValueException(timeboxStart, "Mandatory field"));
+			}
+			
+			if (timeboxFinish.getValue() == null) {
+				validatioExceptionList.add(new WrongValueException(timeboxFinish, "Mandatory field"));
+			}
+		}
+
+		// throw exceptions to the view
+		if (!validatioExceptionList.isEmpty()) {
+			throw new WrongValuesException(validatioExceptionList.toArray(new WrongValueException[0]));
 		}
 
 		try {

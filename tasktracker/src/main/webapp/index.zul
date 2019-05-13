@@ -28,18 +28,18 @@
 			<listhead>
 				<listheader label="Date" hflex="min" sort="auto(date)"/>
 				<listheader label="Department" hflex="min" sort="auto(department)"/>
-				<listheader label="Task Description" sort="auto(description)"/>
+				<listheader label="Task Description" width="30%" sort="auto(description)"/>
 				<listheader label="Start" hflex="min" sort="auto(startTime)" />
 				<listheader label="Finish" hflex="min" sort="auto(finish)" />
 				<listheader label="Planned" hflex="min" sort="auto(underPlan)" />
 				<listheader label="Notes (Optional)" sort="auto(note)"/>
-				<listheader label="Outcomes" sort="auto(outcome)"/>
-				<listheader label="Follow Up Action" sort="auto(followUpAction)" />
+				<listheader label="Outcomes (Optional)" sort="auto(outcome)"/>
+				<listheader label="Follow Up Action (Optional)" sort="auto(followUpAction)" />
 			</listhead>
 			<template name="model" var="task">
 				<listitem value="@bind(task)">
 					<listcell>
-						<datebox value="@bind(task.date)" cols="10" constraint="no empty, no future"/>
+						<datebox value="@bind(task.date)" cols="10" constraint="no future"/>
 					</listcell>
 					<listcell>
 						<combobox autodrop="true" cols="20" model="@load($composer.departmentList)" value="@bind(task.department)">
@@ -77,15 +77,15 @@
 						</combobox> -->
 					</listcell>
 					<listcell>
-						<textbox value="@bind(task.description)"
+						<textbox value="@bind(task.note)"
 							rows="3" hflex="true" maxlength="500" />
 					</listcell>
 					<listcell>
-						<textbox value="@bind(task.description)"
+						<textbox value="@bind(task.outcome)"
 							rows="3" hflex="true" maxlength="500" />
 					</listcell>
 					<listcell>
-						<textbox value="@bind(task.description)" constraint="no empty"
+						<textbox value="@bind(task.followUpAction)" constraint="no empty"
 							rows="3" hflex="true" maxlength="500" />
 					</listcell>
 				</listitem>

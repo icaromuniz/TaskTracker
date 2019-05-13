@@ -97,19 +97,17 @@ public class PersistenceService {
 	public static void persistTaskList(List<Task> taskList) throws SQLException {
 
 		String stringUpdate = "update task set date = ?, department = ?, description = ?, start_time = ?, finish_time = ?, "
-				+ "under_plan = ? where id = ?;"; // TODO insert new records
+				+ "under_plan = ?, note = ?, outcome = ?, follow_up_action = ? where id = ?;";
 		
-		String stringDelete = "delete from public.task where user_id = ? and id not in (";
 		String stringInsert = "insert into public.task (\"id\", \"user_id\", \"date\", \"department\", \"description\", \"under_plan\", "
-				+ "\"start_time\", \"finish_time\") values (nextval('task_seq'), ?, ?, ?, ?, ?, ?, ?);";
+				+ "\"start_time\", \"finish_time\", note) values (nextval('task_seq'), ?, ?, ?, ?, ?, ?, ?, ?);";
+
+		String stringDelete = "delete from public.task where user_id = ? and id not in (";
 
 		PreparedStatement preparedStatementInsert = null;
 		PreparedStatement preparedStatementUpdate = null;
 		PreparedStatement preparedStatementDelete = null;
 
-		// *insert new tasks
-		// *update tasks
-		// *delete absent tasks
 
 		try {
 
@@ -140,6 +138,7 @@ public class PersistenceService {
 					preparedStatementInsert.setBoolean(5, task.isUnderPlan());
 					preparedStatementInsert.setTime(6, new Time(task.getStartTime().getTime()));
 					preparedStatementInsert.setTime(7, new Time(task.getFinishTime().getTime()));
+					preparedStatementInsert.setString(8, task.getNote());
 					
 					preparedStatementInsert.executeUpdate();
 
@@ -151,9 +150,11 @@ public class PersistenceService {
 					preparedStatementUpdate.setTime(4, new Time(task.getStartTime().getTime()));
 					preparedStatementUpdate.setTime(5, new Time(task.getFinishTime().getTime()));
 					preparedStatementUpdate.setBoolean(6, task.isUnderPlan());
+					preparedStatementUpdate.setString(7, task.getNote());
+					preparedStatementUpdate.setString(8, task.getOutcome());
+					preparedStatementUpdate.setString(9, task.getFollowUpAction());
 
-					preparedStatementUpdate.setInt(7, task.getId());
-					
+					preparedStatementUpdate.setInt(10, task.getId());
 					preparedStatementUpdate.executeUpdate();
 
 				}
@@ -244,6 +245,9 @@ public class PersistenceService {
 				t.setUnderPlan(resultSet.getBoolean("under_plan"));
 				t.setStartTime(resultSet.getTime("start_time"));
 				t.setFinishTime(resultSet.getTime("finish_time"));
+				t.setNote(resultSet.getString("note"));
+				t.setOutcome(resultSet.getString("outcome"));
+				t.setFollowUpAction(resultSet.getString("follow_up_action"));
 				
 				taskList.add(t);
 			}
