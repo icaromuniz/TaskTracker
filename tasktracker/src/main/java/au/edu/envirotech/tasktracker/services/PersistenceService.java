@@ -20,7 +20,7 @@ public class PersistenceService {
 	
 	private static Connection getConnection() throws SQLException {
 		
-		if (connection == null) {
+		if (connection == null || connection.isClosed()) {
 			
 			try {
 				Class.forName("org.postgresql.Driver");
