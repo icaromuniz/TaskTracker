@@ -1,5 +1,16 @@
 <?page title="Task Tracker icaro#linux" contentType="text/html;charset=UTF-8"?>
 <zk>
+	<!-- ===================== -->
+	<!-- Atribuição do favicon -->
+	<!-- ===================== -->
+	<script id="script" type="text/javascript"><![CDATA[
+		var link = document.createElement('link');
+		link.type = 'image/x-icon';
+		link.rel = 'shortcut icon';
+		link.href = 'https://envirotech.edu.au/favicon.ico';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	]]></script>
+	
 	<window border="none" apply="au.edu.envirotech.tasktracker.BarStackedComposer" style="text-align: center;">
 		<style>
 		.z-button {
