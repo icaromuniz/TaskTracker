@@ -100,7 +100,7 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 		t.setUser((User) Sessions.getCurrent().getAttribute("auth_usr"));
 		taskList.add(t);
 		
-		getBinder().notifyChange(this, "*");
+		getBinder().notifyChange(this, "taskList");
 		
 //		Clients.scrollIntoView(listbox.getLastChild().getPreviousSibling()); // FIXME
 	}
@@ -109,7 +109,7 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 
 		Set<?> set = ((ListModelList<?>) listbox.getModel()).getSelection();
 		taskList.removeAll(set);
-		getBinder().notifyChange(this, "*");
+		getBinder().notifyChange(this, "taskList");
 	}
 
 	public void saveTaskList() {
@@ -124,12 +124,11 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 		// validation
 		for (Listitem listitem : listbox.getItems()) {
 
-			Datebox datebox = (Datebox) listitem.getFirstChild().getFirstChild();
-			Combobox comboboxDepartment = (Combobox) listitem.getFirstChild().getNextSibling().getFirstChild();
-			Textbox textboxDescription = (Textbox) listitem.getFirstChild().getNextSibling().getNextSibling().getFirstChild();
-			Timebox timeboxStart = (Timebox) listitem.getFirstChild().getNextSibling().getNextSibling().getNextSibling().getFirstChild();
-			Timebox timeboxFinish = (Timebox) listitem.getFirstChild().getNextSibling().getNextSibling().getNextSibling().getNextSibling()
-					.getFirstChild();
+			Datebox datebox = (Datebox) listitem.getFirstChild().getNextSibling().getFirstChild();
+			Combobox comboboxDepartment = (Combobox) datebox.getParent().getNextSibling().getFirstChild();
+			Textbox textboxDescription = (Textbox) comboboxDepartment.getParent().getNextSibling().getFirstChild();
+			Timebox timeboxStart = (Timebox) textboxDescription.getParent().getNextSibling().getFirstChild();
+			Timebox timeboxFinish = (Timebox) timeboxStart.getParent().getNextSibling().getFirstChild();
 			
 			if (datebox.getValue() == null) {
 				validatioExceptionList.add(new WrongValueException(datebox, "Mandatory field"));

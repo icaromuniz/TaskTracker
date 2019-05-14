@@ -37,11 +37,13 @@
 		
 		<listbox id="listbox" model="@bind($composer.taskList)" multiple="true" checkmark="true" vflex="true" rows="10" mold="paging">
 			<listhead>
+				<listheader hflex="min"/>
 				<listheader label="Date" hflex="min" sort="auto(date)"/>
 				<listheader label="Department" hflex="min" sort="auto(department)"/>
 				<listheader label="Task Description" width="30%" sort="auto(description)"/>
 				<listheader label="Start" hflex="min" sort="auto(startTime)" />
-				<listheader label="Finish" hflex="min" sort="auto(finish)" />
+				<listheader label="Finish" hflex="min" sort="auto(finishTime)" />
+				<!-- <listheader label="Spent" hflex="min" sort="auto(timeSpent)" align="center"/> -->
 				<listheader label="Planned" hflex="min" sort="auto(underPlan)" />
 				<listheader label="Notes (Optional)" sort="auto(note)"/>
 				<listheader label="Outcomes (Optional)" sort="auto(outcome)"/>
@@ -49,6 +51,7 @@
 			</listhead>
 			<template name="model" var="task">
 				<listitem value="@bind(task)">
+					<listcell/>
 					<listcell>
 						<datebox value="@bind(task.date)" cols="10" constraint="no future"/>
 					</listcell>
@@ -64,28 +67,18 @@
 							placeholder="Please, describe the execution of the task..."/>
 					</listcell>
 					<listcell>
-						<timebox value="@bind(task.startTime)" cols="6"
-							format="HH:mm" />
+						<timebox value="@bind(task.startTime)" cols="6" format="HH:mm" />
 					</listcell>
 					<listcell>
-						<timebox value="@bind(task.finishTime)" cols="6"
-							format="HH:mm" />
+						<timebox value="@bind(task.finishTime)" cols="6" format="HH:mm"/>
 					</listcell>
-					<!-- <listcell>
-						<label value="${timeboxStart.value}"/>
-					</listcell> -->
+					<!-- <listcell label="@load(task.timeSpent) @converter('formatedDate', format='HH:mm')"/> -->
 					<listcell>
 						<combobox cols="4" autodrop="true" autocomplete="true" value="@bind(task.underPlanLabel)"
 							style="@load(Boolean.parseBoolean(task.underPlan) ? 'color: blue;' : 'color: black;')">
 							<comboitem label="Yes"/>
 							<comboitem label="No"/>
 						</combobox>
-						<!-- <combobox cols="4" autodrop="true" autocomplete="true" model='@load($composer.booleanList)' value="@bind(task.underPlan)"
-							style="@load(Boolean.parseBoolean(task.underPlan) ? 'color: blue;' : 'color: black;')">
-							<template name="model" var="label">
-								<comboitem label="@bind(label)"/>
-							</template>
-						</combobox> -->
 					</listcell>
 					<listcell>
 						<textbox value="@bind(task.note)" rows="3" hflex="true" maxlength="500" />

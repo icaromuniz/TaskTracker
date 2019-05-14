@@ -101,9 +101,7 @@
 					</listcell>
 					<listcell label="@load(task.startTime) @converter('formatedDate', format='HH:mm')"/>
 					<listcell label="@load(task.finishTime) @converter('formatedDate', format='HH:mm')"/>
-					<!-- <listcell>
-						<label value="${timeboxStart.value}"/>
-					</listcell> -->
+					<!-- <listcell label="@load(task.timeSpent) @converter('formatedDate', format='HH:mm')"/> -->
 					<listcell label='@load(task.isUnderPlan() ? "Yes" : "No")' style="@load(task.isUnderPlan() ? 'color: DodgerBlue; font-weight: bold;' : 'color: black;')"/>
 					<listcell>
 						<textbox value="@bind(task.note)" readonly="true"

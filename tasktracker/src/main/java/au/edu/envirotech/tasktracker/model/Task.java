@@ -111,4 +111,13 @@ public class Task {
 	public void setFollowUpAction(String followUpAction) {
 		this.followUpAction = followUpAction;
 	}
+	
+	public Date getTimeSpent() {
+		
+		if (getStartTime() != null && getFinishTime() != null) {
+			return new Date(getFinishTime().getTime() - getStartTime().getTime());
+		}
+		
+		return null;
+	}
 }

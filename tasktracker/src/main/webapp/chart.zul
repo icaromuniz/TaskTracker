@@ -11,6 +11,12 @@
 		document.getElementsByTagName('head')[0].appendChild(link);
 	]]></script>
 	
+	<zscript><![CDATA[
+		public void updateTimeSpent(String startTime, String finishTime){
+			
+		}
+	]]></zscript>
+	
 	<window border="none" apply="au.edu.envirotech.tasktracker.BarStackedComposer" style="text-align: center;">
 		<style>
 		.z-button {
@@ -22,7 +28,7 @@
 			<image src="/img/logo-small-new.jpg" style="align: center;" height="100px"/>
 		</hlayout>
 		
-		<groupbox style="font-weight: bold;">
+		<groupbox style="font-weight: bold;" open="false">
 			<caption tooltiptext="Click to toggle filtering options" style="font-weight: bold; color: DodgerBlue; font-size: larger" label="Filter"
 				iconSclass="z-icon-filter"/>
 			
@@ -32,8 +38,8 @@
 					<column label="Date" hflex="min"/>
 					<column label="Department" hflex="min"/>
 					<column label="Keywords in Task Specification"/>
-					<column label="Start" hflex="min"/>
-					<column label="Finish" hflex="min"/>
+					<!-- <column label="Start" hflex="min"/>
+					<column label="Finish" hflex="min"/> -->
 					<column label="Planned" hflex="min"/>
 				</columns>
 				<rows>
@@ -47,8 +53,8 @@
 						<combobox id="comboboxDepartment" model="@load($composer.departmentList)" forward="onOK = buttonFilter.onClick"/>
 						<textbox id="textboxDescription" hflex="true" forward="onOK = buttonFilter.onClick" 
 							placeholder="Keywords present in the Task Description..." />
-						<timebox value="@load(task.start)" cols="6" format="HH:mm" disabled="true"/>
-						<timebox value="@load(task.finish)" cols="6" format="HH:mm" disabled="true"/>
+						<!-- <timebox value="@load(task.start)" cols="6" format="HH:mm" disabled="true"/>
+						<timebox value="@load(task.finish)" cols="6" format="HH:mm" disabled="true" onBlur=""/> -->
 						<combobox id="comboboxUnderPlan" cols="4" forward="onOK = buttonFilter.onClick">
 							<comboitem label="Yes" value="true"/>
 							<comboitem label="No" value="false"/>
@@ -69,16 +75,13 @@
 			</div>
 		</groupbox>
 		
-		<separator/>
 	
-	    <chart id="chart" type="bar" title="Tasks Tracked" hflex="true" threeD="true" orient="horizontal"/>
-	    <space/>
-	    <chart id="chartPie" type="pie" title="Tasks Tracked" hflex="true" threeD="true" orient="horizontal"/>
 	    
 	    <separator height="20px"/>
 	    <chart id="chartNew" type="stacked_bar" title="Department Tracked Tasks Chart" 
 	    	width="1200px" height="500px" threeD="true" orient="horizontal"/>
-	    	
+		<separator/>
+	    <chart id="chart" type="pie" title="Tasks Tracked" hflex="true" threeD="true" orient="horizontal"/>
 	    <separator height="20px"/>
 		<button label="Form" href="/" iconSclass="z-icon-pencil" />
 		<space/>

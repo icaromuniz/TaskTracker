@@ -309,4 +309,35 @@ public class PersistenceService {
 		
 		return departmentArray;
 	}
+
+	public static List<String[]> findBarChartData() throws SQLException {
+		
+		List<String[]> dataList = new ArrayList<String[]>();
+		PreparedStatement preparedStatement = null;
+		ResultSet resultSet = null;
+		String sqlQuery = "";
+		
+		try {
+			
+			preparedStatement = PersistenceService.getConnection().prepareStatement(sqlQuery);
+			resultSet = preparedStatement.executeQuery();
+			
+			while (resultSet.next()) {
+				String[] dataRow = {resultSet.getString("u.email"), resultSet.getString("t.department"), resultSet.getString("time_spent")};
+				dataList.add(dataRow);
+			}
+			
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			return null;
+			
+		} finally {
+			
+			resultSet.close();
+			preparedStatement.close();
+		}
+
+		return dataList;
+	}
 }
