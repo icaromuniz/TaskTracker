@@ -57,7 +57,7 @@ public class ReportComposer extends BindComposer<Component> {
 			return true;
 		}
 
-		return false;
+		return true;
 	}
 
 	public String getCurrentUser() {
@@ -97,11 +97,10 @@ public class ReportComposer extends BindComposer<Component> {
 		this.taskList = taskList;
 	}
 	
-	public List<User> getUserList() {
+	public List<User> getUserList() { 
 		try {
 			return PersistenceService.findUserById(new Integer[0]);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

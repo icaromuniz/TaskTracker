@@ -310,12 +310,34 @@ public class PersistenceService {
 		return departmentArray;
 	}
 
-	public static List<String[]> findBarChartData() throws SQLException {
+	public static List<String[]> findBarChartData(java.util.Date initialDate, java.util.Date finalDate, User user, String department) throws SQLException {
 		
 		List<String[]> dataList = new ArrayList<String[]>();
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet = null;
-		String sqlQuery = "";
+		String sqlQuery =
+				"select " + 
+				"	u.email, " + 
+				"	t.department, " + 
+				"	extract(hour from sum(t.finish_time - t.start_time)) as hour_spent " + 
+				"from task t " +
+				"join public.user u on u.id = t.user_id " +
+				"where true "; 
+		
+		// filtering by initial date
+		if (initialDate != null) {
+			sqlQuery += " and t.date >= '" + new SimpleDateFormat("yyyy-MM-dd").format(initialDate) + "'";
+		}
+		
+		// filtering by final date
+		if (finalDate != null) {
+			sqlQuery += " and t.date <= '" + new SimpleDateFormat("yyyy-MM-dd").format(finalDate) + "'";
+		}
+		
+		sqlQuery  += 
+				"group by u.email, t.department " + 
+				"having extract(hour from sum(t.finish_time - t.start_time)) is not null " + 
+				"order by u.email, t.department";
 		
 		try {
 			
@@ -323,7 +345,7 @@ public class PersistenceService {
 			resultSet = preparedStatement.executeQuery();
 			
 			while (resultSet.next()) {
-				String[] dataRow = {resultSet.getString("u.email"), resultSet.getString("t.department"), resultSet.getString("time_spent")};
+				String[] dataRow = {resultSet.getString("email"), resultSet.getString("department"), resultSet.getString("hour_spent")};
 				dataList.add(dataRow);
 			}
 			
