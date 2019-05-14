@@ -77,16 +77,13 @@
 						</combobox> -->
 					</listcell>
 					<listcell>
-						<textbox value="@bind(task.note)"
-							rows="3" hflex="true" maxlength="500" />
+						<textbox value="@bind(task.note)" rows="3" hflex="true" maxlength="500" />
 					</listcell>
 					<listcell>
-						<textbox value="@bind(task.outcome)"
-							rows="3" hflex="true" maxlength="500" />
+						<textbox value="@bind(task.outcome)" rows="3" hflex="true" maxlength="500" />
 					</listcell>
 					<listcell>
-						<textbox value="@bind(task.followUpAction)" constraint="no empty"
-							rows="3" hflex="true" maxlength="500" />
+						<textbox value="@bind(task.followUpAction)" rows="3" hflex="true" maxlength="500" />
 					</listcell>
 				</listitem>
 			</template>
