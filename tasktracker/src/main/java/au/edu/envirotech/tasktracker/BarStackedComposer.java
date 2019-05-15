@@ -73,11 +73,12 @@ public class BarStackedComposer extends BindComposer<Window> {
 		Date initialDate = ((Datebox) chart.getFellow("dateboxInitialDate")).getValue();
 		Date finalDate = ((Datebox) chart.getFellow("dateboxFinalDate")).getValue();
 		String userEmail = ((Combobox) chart.getFellow("comboboxUser")).getValue();
+		String department = ((Combobox) chart.getFellow("comboboxDepartment")).getValue();
 
 		try {
 
 			barChartData = PersistenceService.findBarChartData(initialDate, finalDate,
-					userEmail != null && !userEmail.isEmpty() ? new User(0, userEmail) : null, null);
+					userEmail != null && !userEmail.isEmpty() ? new User(0, userEmail) : null, department);
 
 		} catch (SQLException e) {
 

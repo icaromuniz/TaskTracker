@@ -339,6 +339,11 @@ public class PersistenceService {
 			sqlQuery += " and u.email like '" + user.getEmail() + "' ";
 		}
 		
+		// filtering by department
+		if (department != null && !department.isEmpty()) {
+			sqlQuery += " and t.department like '" + department + "' ";
+		}
+		
 		sqlQuery  += 
 				"group by u.email, t.department " + 
 				"having extract(hour from sum(t.finish_time - t.start_time)) is not null " + 
