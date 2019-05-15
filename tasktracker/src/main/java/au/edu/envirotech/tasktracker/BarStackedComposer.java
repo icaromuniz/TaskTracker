@@ -1,12 +1,14 @@
 package au.edu.envirotech.tasktracker;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import org.zkoss.bind.BindComposer;
 import org.zkoss.zk.ui.select.annotation.Wire;
 import org.zkoss.zk.ui.util.ConventionWires;
 import org.zkoss.zul.Chart;
+import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
 import org.zkoss.zul.Messagebox;
 import org.zkoss.zul.SimpleCategoryModel;
@@ -68,23 +70,27 @@ public class BarStackedComposer extends BindComposer<Window> {
 	public void updateChartData() {
 
 		List<String[]> barChartData = null;
+		Date initialDate = ((Datebox) chart.getFellow("dateboxInitialDate")).getValue();
+		Date finalDate = ((Datebox) chart.getFellow("dateboxFinalDate")).getValue();
+		String userEmail = ((Combobox) chart.getFellow("comboboxUser")).getValue();
 
 		try {
 
-			barChartData = PersistenceService.findBarChartData(((Datebox)chart.getFellow("dateboxInitialDate")).getValue(), null, null, null);
+			barChartData = PersistenceService.findBarChartData(initialDate, finalDate,
+					userEmail != null && !userEmail.isEmpty() ? new User(0, userEmail) : null, null);
 
 		} catch (SQLException e) {
 
 			e.printStackTrace();
-			Messagebox.show("Error assembling the data from the Database.\n"
-					+ "Please send us a screenshot of this screen.");
+			Messagebox.show(
+					"Error assembling the data from the Database.\n" + "Please send us a screenshot of this screen.");
 			return;
 		}
 
 		SimpleCategoryModel simpleCategoryModel = new SimpleCategoryModel();
 
-    	for (String[] dataRow : barChartData) {
-    		simpleCategoryModel.setValue(dataRow[0].split("@")[0], dataRow[1], Integer.parseInt(dataRow[2]));
+		for (String[] dataRow : barChartData) {
+			simpleCategoryModel.setValue(dataRow[0].split("@")[0], dataRow[1], Integer.parseInt(dataRow[2]));
 		}
 
 		((Chart) chart.getFellow("chartNew")).setModel(simpleCategoryModel);

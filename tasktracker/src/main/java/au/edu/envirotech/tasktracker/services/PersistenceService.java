@@ -319,19 +319,24 @@ public class PersistenceService {
 				"select " + 
 				"	u.email, " + 
 				"	t.department, " + 
-				"	extract(hour from sum(t.finish_time - t.start_time)) as hour_spent " + 
+				"	extract(hour from sum(t.finish_time - t.start_time))::integer as hour_spent " + 
 				"from task t " +
 				"join public.user u on u.id = t.user_id " +
 				"where true "; 
 		
 		// filtering by initial date
 		if (initialDate != null) {
-			sqlQuery += " and t.date >= '" + new SimpleDateFormat("yyyy-MM-dd").format(initialDate) + "'";
+			sqlQuery += " and t.date >= '" + new SimpleDateFormat("yyyy-MM-dd").format(initialDate) + "' ";
 		}
 		
 		// filtering by final date
 		if (finalDate != null) {
-			sqlQuery += " and t.date <= '" + new SimpleDateFormat("yyyy-MM-dd").format(finalDate) + "'";
+			sqlQuery += " and t.date <= '" + new SimpleDateFormat("yyyy-MM-dd").format(finalDate) + "' ";
+		}
+		
+		// filtering by user
+		if (user != null) {
+			sqlQuery += " and u.email like '" + user.getEmail() + "' ";
 		}
 		
 		sqlQuery  += 
