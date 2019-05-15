@@ -13,6 +13,7 @@ import org.zkoss.zk.ui.Sessions;
 import org.zkoss.zk.ui.WrongValueException;
 import org.zkoss.zk.ui.WrongValuesException;
 import org.zkoss.zk.ui.select.annotation.Wire;
+import org.zkoss.zk.ui.util.Clients;
 import org.zkoss.zk.ui.util.ConventionWires;
 import org.zkoss.zul.Combobox;
 import org.zkoss.zul.Datebox;
@@ -165,6 +166,7 @@ public class TaskTrackerComposer extends BindComposer<Component> {
 			return;
 		}
 
-		Messagebox.show("All your tasks are saved!", "Task Tracker - Success!", 1, Messagebox.INFORMATION, null);
+		Clients.showNotification("All your tasks are saved!", "info", null, null, 3000);
+//		Messagebox.show("All your tasks are saved!", "Task Tracker - Success!", 1, Messagebox.INFORMATION, null);
 	}
 }

@@ -64,7 +64,7 @@ public class AuthenticationComposer extends BindComposer<Component> {
 					}
 				};
 				
-				Messagebox.show("User successfully registered", "Registration success", 1, Messagebox.INFORMATION, eventListener);
+				Messagebox.show("User successfully registered!", "Registration success.", 1, Messagebox.INFORMATION, eventListener);
 			}
 		}
 	}

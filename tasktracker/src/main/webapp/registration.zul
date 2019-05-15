@@ -11,6 +11,18 @@
 		document.getElementsByTagName('head')[0].appendChild(link);
 	]]></script>
 	
+	<!-- ====================================== -->
+	<!-- Definição das dimensões da notificação -->
+	<!-- ====================================== -->
+	<style>
+		.z-notification-content {
+		    width: 400px;
+		    min-height: 30px;
+		    font-size: 14px;
+		    font-weight: bold;
+		}
+	</style>
+	
 	<style>
 	.z-caption-content{
 		color: DodgerBlue;
@@ -44,7 +56,7 @@
 					</row>
 					<row spans="2" align="center">
 						<cell>
-							<button iconSclass="z-icon-check-square-o" label="Register" onClick="$composer.registerUser()"/>
+							<button id="buttonOK" iconSclass="z-icon-check-square-o" label="Register" onClick="$composer.registerUser()"/>
 							<space/>
 							<button iconSclass="z-icon-undo" label="Cancel" onClick='Executions.sendRedirect("/login.zul")'/>
 						</cell>

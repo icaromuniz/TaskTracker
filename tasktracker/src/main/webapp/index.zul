@@ -11,6 +11,18 @@
 		document.getElementsByTagName('head')[0].appendChild(link);
 	]]></script>
 	
+	<!-- ====================================== -->
+	<!-- Definição das dimensões da notificação -->
+	<!-- ====================================== -->
+	<style>
+		.z-notification-content {
+		    width: 400px;
+		    min-height: 30px;
+		    font-size: 14px;
+		    font-weight: bold;
+		}
+	</style>
+	
 	<style>
 		.z-listheader-content{
 			color: DodgerBlue;
