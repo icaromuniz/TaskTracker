@@ -49,7 +49,7 @@
 		
 		<listbox id="listbox" model="@bind($composer.taskList)" multiple="true" checkmark="true" vflex="true" rows="10" mold="paging">
 			<listhead>
-				<listheader hflex="min"/>
+				<listheader label="#" hflex="min"/>
 				<listheader label="Date" hflex="min" sort="auto(date)"/>
 				<listheader label="Department" hflex="min" sort="auto(department)"/>
 				<listheader label="Task Description" width="30%" sort="auto(description)"/>
@@ -63,7 +63,7 @@
 			</listhead>
 			<template name="model" var="task">
 				<listitem value="@bind(task)">
-					<listcell/>
+					<listcell label="@bind(self.parent.index)" style="font-weight: bold; color: DodgerBlue; font-style: italic;"/>
 					<listcell>
 						<datebox value="@bind(task.date)" cols="10" constraint="no future"/>
 					</listcell>
