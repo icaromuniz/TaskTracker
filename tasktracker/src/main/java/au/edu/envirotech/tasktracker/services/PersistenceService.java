@@ -62,7 +62,7 @@ public class PersistenceService {
 	
 	public static User getAuthorizedUser(String email, String password) throws SQLException {
 		
-		String sql = "select * from public.user where email like ? and password like ?";
+		String sql = "select * from public.user where lower(email) like ? and password like ?";
 		PreparedStatement preparedStatement = null;
 		ResultSet resultSet;
 		
@@ -70,7 +70,7 @@ public class PersistenceService {
 			
 			preparedStatement = getConnection().prepareStatement(sql);
 			
-			preparedStatement.setString(1, email);
+			preparedStatement.setString(1, email.toLowerCase());
 			preparedStatement.setString(2, password);
 			
 			resultSet = preparedStatement.executeQuery();
@@ -277,6 +277,8 @@ public class PersistenceService {
 			stringSql += ")";
 		}
 		
+		stringSql += " order by email ";
+		
 		try {
 
 			preparedStatement = getConnection().prepareStatement(stringSql);
@@ -317,7 +319,7 @@ public class PersistenceService {
 		ResultSet resultSet = null;
 		String sqlQuery =
 				"select " + 
-				"	u.email, " + 
+				"	initcap(u.email) as email, " + 
 				"	t.department, " + 
 				"	extract(hour from sum(t.finish_time - t.start_time))::integer as hour_spent " + 
 				"from task t " +
@@ -346,7 +348,8 @@ public class PersistenceService {
 		
 		sqlQuery  += 
 				"group by u.email, t.department " + 
-				"having extract(hour from sum(t.finish_time - t.start_time)) is not null " + 
+				"having extract(hour from sum(t.finish_time - t.start_time)) is not null " +
+				"	and extract(hour from sum(t.finish_time - t.start_time)) <> 0 " + 
 				"order by u.email, t.department";
 		
 		try {
